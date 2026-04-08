@@ -28,4 +28,8 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 
+// Support static files.
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
 app.Run();
