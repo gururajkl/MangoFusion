@@ -1,0 +1,32 @@
+name: Microservice
+
+on:
+  push:
+    branches: [ "master", "main" ]
+  pull_request:
+    branches: [ "master", "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    # -------------------------
+    # Setup .NET
+    # -------------------------
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 10.0.x
+
+    - name: Clean UsersService Backend
+      run: dotnet clean Backend/MangoFusion.API.slnx
+
+    - name: Restore UsersService Backend
+      run: dotnet restore Backend/MangoFusion.API.slnx
+
+    - name: Build UsersService Backend
+      run: dotnet build --no-restore Backend/MangoFusion.API.slnx
+
