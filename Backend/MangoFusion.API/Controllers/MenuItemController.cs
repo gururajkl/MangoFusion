@@ -107,4 +107,82 @@ public class MenuItemController : Controller
 
         return BadRequest(_apiResponse);
     }
+
+    [HttpPut]
+    public async Task<ActionResult<ApiResponse>> UpdateMenuItem(int id, [FromForm] MenuItemUpdateDto menuItemUpdateDto)
+    {
+        try
+        {
+            if (ModelState.IsValid)
+            {
+                if (menuItemUpdateDto is null || menuItemUpdateDto.Id != id)
+                {
+                    _apiResponse.IsSuccess = false;
+                    _apiResponse.StatusCode = HttpStatusCode.BadRequest;
+                    _apiResponse.ErrorMessage = ["Invalid data passed"];
+                    return BadRequest(_apiResponse);
+                }
+
+                MenuItem? menuItemFromDb = await _dbContext.MenuItems.FirstOrDefaultAsync(m => m.Id == id);
+
+                if (menuItemFromDb is null)
+                {
+                    _apiResponse.IsSuccess = false;
+                    _apiResponse.ErrorMessage = ["Invalid id passed"];
+                    return NotFound(_apiResponse);
+                }
+
+                menuItemFromDb.Name = menuItemUpdateDto.Name;
+                menuItemFromDb.Description = menuItemUpdateDto.Description;
+                menuItemFromDb.Price = menuItemUpdateDto.Price;
+                menuItemFromDb.SpecialTag = menuItemUpdateDto.SpecialTag;
+
+                if (menuItemUpdateDto.File is { Length: > 0 })
+                {
+                    var imagesPath = Path.Combine(_webHostEnvironment.WebRootPath, "images");
+                    var filePath = Path.Combine(imagesPath, menuItemUpdateDto.File.FileName);
+
+                    Directory.CreateDirectory(imagesPath);
+
+                    if (IOFile.Exists(filePath))
+                    {
+                        IOFile.Delete(filePath);
+                    }
+
+                    // Also delete the old image stored in db.
+                    var fileStoredInDb = Path.Combine(_webHostEnvironment.WebRootPath, menuItemFromDb.Image);
+                    if (IOFile.Exists(fileStoredInDb))
+                    {
+                        IOFile.Delete(fileStoredInDb);
+                    }
+
+                    // Upload the images.
+                    using FileStream fileStream = new(filePath, FileMode.Create);
+                    await menuItemUpdateDto.File.CopyToAsync(fileStream);
+
+                    menuItemFromDb.Image = $"images/{menuItemUpdateDto.File.FileName}";
+
+                    _dbContext.Update(menuItemFromDb);
+                    await _dbContext.SaveChangesAsync();
+
+                    _apiResponse.StatusCode = HttpStatusCode.NoContent;
+                    _apiResponse.IsSuccess = true;
+
+                    return Ok(_apiResponse);
+                }
+            }
+            else
+            {
+                _apiResponse.IsSuccess = false;
+                _apiResponse.ErrorMessage = ["Invalid data passed"];
+            }
+        }
+        catch (Exception ex)
+        {
+            _apiResponse.IsSuccess = false;
+            _apiResponse.ErrorMessage = [ex.ToString()];
+        }
+
+        return BadRequest(_apiResponse);
+    }
 }
