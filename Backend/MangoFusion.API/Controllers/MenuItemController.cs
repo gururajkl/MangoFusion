@@ -185,4 +185,58 @@ public class MenuItemController : Controller
 
         return BadRequest(_apiResponse);
     }
+
+    [HttpDelete]
+    public async Task<IActionResult> DeleteMenuItem(int id)
+    {
+        try
+        {
+            if (ModelState.IsValid)
+            {
+                if (id <= 0)
+                {
+                    _apiResponse.IsSuccess = false;
+                    _apiResponse.StatusCode = HttpStatusCode.BadRequest;
+                    _apiResponse.ErrorMessage = ["Invalid data passed"];
+                    return BadRequest(_apiResponse);
+                }
+
+                MenuItem? itemFromDb = await _dbContext.MenuItems.FirstOrDefaultAsync(m => m.Id == id);
+
+                if (itemFromDb is null)
+                {
+                    _apiResponse.IsSuccess = false;
+                    _apiResponse.StatusCode = HttpStatusCode.NotFound;
+                    _apiResponse.ErrorMessage = ["Menu item not found"];
+                    return NotFound(_apiResponse);
+                }
+
+                var fileStoredInDb = Path.Combine(_webHostEnvironment.WebRootPath, itemFromDb.Image);
+                if (IOFile.Exists(fileStoredInDb))
+                {
+                    IOFile.Delete(fileStoredInDb);
+                }
+
+                _dbContext.Remove(itemFromDb);
+                await _dbContext.SaveChangesAsync();
+
+                _apiResponse.StatusCode = HttpStatusCode.NoContent;
+                _apiResponse.IsSuccess = true;
+
+                return Ok(_apiResponse);
+            }
+            else
+            {
+                _apiResponse.IsSuccess = false;
+                _apiResponse.ErrorMessage = ["Invalid data passed"];
+            }
+        }
+        catch (Exception ex)
+        {
+            _apiResponse.IsSuccess = false;
+            _apiResponse.ErrorMessage = [ex.ToString()];
+        }
+
+        return BadRequest(_apiResponse);
+    }
 }
