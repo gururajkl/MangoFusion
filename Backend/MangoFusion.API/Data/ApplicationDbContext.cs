@@ -20,7 +20,7 @@ public class ApplicationDbContext(DbContextOptions options) : IdentityDbContext<
             Image = "images/spring roll.jpg",
             Price = 7.99,
             Category = "Appetizer",
-            SpecialTag = "images/spring roll.jpg"
+            SpecialTag = ""
         },
         new MenuItem
         {
@@ -30,7 +30,7 @@ public class ApplicationDbContext(DbContextOptions options) : IdentityDbContext<
             Image = "images/Idli.jpg",
             Price = 8.99,
             Category = "Appetizer",
-            SpecialTag = "images/spring roll.jpg"
+            SpecialTag = ""
         },
         new MenuItem
         {
@@ -50,7 +50,7 @@ public class ApplicationDbContext(DbContextOptions options) : IdentityDbContext<
             Image = "images/hakka noodles.jpg",
             Price = 10.99,
             Category = "Entrée",
-            SpecialTag = "images/spring roll.jpg"
+            SpecialTag = ""
         },
         new MenuItem
         {
@@ -67,10 +67,10 @@ public class ApplicationDbContext(DbContextOptions options) : IdentityDbContext<
             Id = 6,
             Name = "Paneer Pizza",
             Description = "Fusc tincidunt maximus leo, sed scelerisque massa auctor sit amet. Donec ex mauris, hendrerit quis nibh ac, efficitur fringilla enim.",
-            Image = "",
+            Image = "images/paneer pizza.jpg",
             Price = 11.99,
             Category = "Entrée",
-            SpecialTag = "images/paneer pizza.jpg"
+            SpecialTag = ""
         },
         new MenuItem
         {
@@ -87,10 +87,10 @@ public class ApplicationDbContext(DbContextOptions options) : IdentityDbContext<
             Id = 8,
             Name = "Carrot Love",
             Description = "Fusc tincidunt maximus leo, sed scelerisque massa auctor sit amet. Donec ex mauris, hendrerit quis nibh ac, efficitur fringilla enim.",
-            Image = "images/spring roll.jpg",
+            Image = "images/carrot love.jpg",
             Price = 4.99,
             Category = "Dessert",
-            SpecialTag = "images/carrot love.jpg"
+            SpecialTag = ""
         },
         new MenuItem
         {
