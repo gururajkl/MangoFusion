@@ -54,7 +54,7 @@ public class MenuItemController : Controller
         {
             if (ModelState.IsValid)
             {
-                if (menuItemCreateDto.File is null || menuItemCreateDto.File.Length <= 0)
+                if (menuItemCreateDto.File is { Length: <= 0 })
                 {
                     _apiResponse.IsSuccess = false;
                     _apiResponse.StatusCode = HttpStatusCode.BadRequest;
