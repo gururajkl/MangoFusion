@@ -26,4 +26,20 @@ public class MenuItemController : Controller
         _apiResponse.StatusCode = HttpStatusCode.OK;
         return Ok(_apiResponse);
     }
+
+    [HttpGet("{id:int}", Name = "GetMenuItem")]
+    public async Task<IActionResult> GetMenuItem(int id)
+    {
+        if (id <= 0)
+        {
+            _apiResponse.IsSuccess = false;
+            _apiResponse.StatusCode = HttpStatusCode.BadRequest;
+            _apiResponse.ErrorMessage = ["Invalid id"];
+            return BadRequest(_apiResponse);
+        }
+
+        _apiResponse.Result = await _dbContext.MenuItems.FirstOrDefaultAsync(m => m.Id == id);
+        _apiResponse.StatusCode = HttpStatusCode.OK;
+        return Ok(_apiResponse);
+    }
 }
