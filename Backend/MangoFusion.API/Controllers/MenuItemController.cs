@@ -63,13 +63,9 @@ public class MenuItemController : Controller
                 }
 
                 var imagesPath = Path.Combine(_webHostEnvironment.WebRootPath, "images");
-
-                if (!Directory.Exists(imagesPath))
-                {
-                    Directory.CreateDirectory(imagesPath);
-                }
-
                 var filePath = Path.Combine(imagesPath, menuItemCreateDto.File.FileName);
+
+                Directory.CreateDirectory(imagesPath);
 
                 if (IOFile.Exists(filePath))
                 {
