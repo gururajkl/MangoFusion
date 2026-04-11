@@ -1,4 +1,4 @@
-﻿namespace MangoFusion.API.Models.Dto;;
+﻿namespace MangoFusion.API.Models.Dto;
 
 public class LoginResponseDto
 {
