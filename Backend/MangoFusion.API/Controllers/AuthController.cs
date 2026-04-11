@@ -3,7 +3,11 @@ using MangoFusion.API.Models.Dto;
 using MangoFusion.API.Utility;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using System.Net;
+using System.Security.Claims;
+using System.Text;
 
 namespace MangoFusion.API.Controllers;
 
@@ -64,6 +68,83 @@ public class AuthController : Controller
 
                 return BadRequest(_apiResponse);
             }
+        }
+        else
+        {
+            _apiResponse.StatusCode = HttpStatusCode.BadRequest;
+            _apiResponse.IsSuccess = false;
+
+            foreach (var value in ModelState.Values)
+            {
+                foreach (var error in value.Errors)
+                {
+                    _apiResponse.ErrorMessage.Add(error.ErrorMessage);
+                }
+            }
+
+            return BadRequest(_apiResponse);
+        }
+    }
+
+    [HttpPost("[action]")]
+    public async Task<ActionResult<LoginResponseDto>> Login([FromBody] LoginRequestDto model)
+    {
+        if (ModelState.IsValid)
+        {
+            var userFromDb = await _userManager.FindByEmailAsync(model.Email);
+
+            if (userFromDb is not null)
+            {
+                bool isValidUser = await _userManager.CheckPasswordAsync(userFromDb, model.Password);
+
+                if (!isValidUser)
+                {
+                    _apiResponse.Result = new LoginResponseDto();
+                    _apiResponse.IsSuccess = false;
+                    _apiResponse.ErrorMessage = ["Invalid credentials"];
+                    _apiResponse.StatusCode = HttpStatusCode.BadRequest;
+                    return BadRequest(_apiResponse);
+                }
+
+                // Generate JWT token.
+                JwtSecurityTokenHandler tokenHandler = new();
+                byte[] key = Encoding.ASCII.GetBytes(_secretKey);
+                var rolesOfUser = await _userManager.GetRolesAsync(userFromDb);
+                var firstRoleOfUser = rolesOfUser.FirstOrDefault();
+
+                SecurityTokenDescriptor securityTokenDescriptor = new()
+                {
+                    Subject = new ClaimsIdentity
+                    ([
+                        new Claim("fullName", userFromDb.Name),
+                        new Claim("id", userFromDb.Id),
+                        new Claim(ClaimTypes.Email, userFromDb.Email!),
+                        new Claim(ClaimTypes.Role, firstRoleOfUser!),
+                    ]),
+                    Expires = DateTime.UtcNow.AddDays(7),
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                };
+
+                SecurityToken token = tokenHandler.CreateToken(securityTokenDescriptor);
+
+                LoginResponseDto responseDto = new()
+                {
+                    Token = tokenHandler.WriteToken(token),
+                    Email = userFromDb.Email!,
+                    Role = firstRoleOfUser!,
+                };
+
+                _apiResponse.StatusCode = HttpStatusCode.OK;
+                _apiResponse.IsSuccess = true;
+                _apiResponse.Result = responseDto;
+                return Ok(_apiResponse);
+            }
+
+            _apiResponse.Result = new LoginResponseDto();
+            _apiResponse.IsSuccess = false;
+            _apiResponse.ErrorMessage = ["Invalid credentials"];
+            _apiResponse.StatusCode = HttpStatusCode.BadRequest;
+            return BadRequest(_apiResponse);
         }
         else
         {
