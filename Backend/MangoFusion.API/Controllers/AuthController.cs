@@ -83,9 +83,51 @@ public class AuthController : Controller
     }
 
     [HttpPost]
-    public ActionResult<LoginResponseDto> Login([FromBody] LoginRequestDto model)
+    public async Task<ActionResult<LoginResponseDto>> Login([FromBody] LoginRequestDto model)
     {
-        throw new NotImplementedException();
+        if (ModelState.IsValid)
+        {
+            var user = await _userManager.FindByEmailAsync(model.Email);
+
+            if (user is not null)
+            {
+                bool isValidUser = await _userManager.CheckPasswordAsync(user, model.Password);
+
+                if (!isValidUser)
+                {
+                    _apiResponse.Result = new LoginResponseDto();
+                    _apiResponse.IsSuccess = false;
+                    _apiResponse.ErrorMessage = ["Invalid credentials"];
+                    _apiResponse.StatusCode = HttpStatusCode.BadRequest;
+                    return BadRequest(_apiResponse);
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
+
+                _apiResponse.Result = new LoginResponseDto();
+                _apiResponse.IsSuccess = false;
+                _apiResponse.ErrorMessage = ["Invalid credentials"];
+                _apiResponse.StatusCode = HttpStatusCode.BadRequest;
+                return BadRequest(_apiResponse);
+            }
+        }
+        else
+        {
+            _apiResponse.StatusCode = HttpStatusCode.BadRequest;
+            _apiResponse.IsSuccess = false;
+
+            foreach (var value in ModelState.Values)
+            {
+                foreach (var error in value.Errors)
+                {
+                    _apiResponse.ErrorMessage.Add(error.ErrorMessage);
+                }
+            }
+
+            return BadRequest(_apiResponse);
+        }
     }
 
     private async Task CheckAndCreateRoles()
