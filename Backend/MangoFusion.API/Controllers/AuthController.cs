@@ -82,6 +82,12 @@ public class AuthController : Controller
         }
     }
 
+    [HttpPost]
+    public ActionResult<LoginResponseDto> Login([FromBody] LoginRequestDto model)
+    {
+        throw new NotImplementedException();
+    }
+
     private async Task CheckAndCreateRoles()
     {
         if (!await _roleManager.RoleExistsAsync(StaticDetails.RoleAdmin))
