@@ -20,4 +20,5 @@ public class OrderHeader
     public double OrderTotal { get; set; }
     public string Status { get; set; } = string.Empty;
     public int TotalItems { get; set; }
+    public List<OrderDetail> OrderDetails { get; set; } = [];
 }
