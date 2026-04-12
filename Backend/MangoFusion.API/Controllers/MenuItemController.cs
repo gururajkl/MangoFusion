@@ -26,7 +26,17 @@ public class MenuItemController : Controller
     [HttpGet]
     public async Task<IActionResult> GetMenuItems()
     {
-        _apiResponse.Result = await _dbContext.MenuItems.ToListAsync();
+        var menuItems = await _dbContext.MenuItems.ToListAsync();
+        var orderDetails = await _dbContext.OrderDetails.Where(o => o.Rating != null).ToListAsync();
+
+        foreach (var menuItem in menuItems)
+        {
+            var ratings = orderDetails.Where(o => o.MenuItemId == menuItem.Id).Select(o => o.Rating!.Value);
+            double averageRating = ratings.Any() ? ratings.Average() : 0;
+            menuItem.Rating = (int)Math.Round(averageRating);
+        }
+
+        _apiResponse.Result = menuItems;
         _apiResponse.StatusCode = HttpStatusCode.OK;
         return Ok(_apiResponse);
     }

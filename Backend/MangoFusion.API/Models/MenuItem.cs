@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MangoFusion.API.Models;
 
@@ -15,4 +16,6 @@ public class MenuItem
     public double Price { get; set; }
     [Required]
     public string Image { get; set; } = string.Empty;
+    [NotMapped]
+    public int Rating { get; set; }
 }
