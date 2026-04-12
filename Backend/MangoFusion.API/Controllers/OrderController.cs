@@ -1,5 +1,7 @@
 ﻿using MangoFusion.API.Data;
 using MangoFusion.API.Models;
+using MangoFusion.API.Models.Dto;
+using MangoFusion.API.Utility;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
@@ -60,5 +62,67 @@ public class OrderController : Controller
         _apiResponse.Result = order;
         _apiResponse.StatusCode = HttpStatusCode.OK;
         return Ok(_apiResponse);
+    }
+
+    [HttpPost("[action]")]
+    public async Task<ActionResult<ApiResponse>> CreateOrder([FromBody] OrderHeaderCreateDto dto)
+    {
+        try
+        {
+            if (ModelState.IsValid)
+            {
+                OrderHeader orderHeader = new()
+                {
+                    PickUpName = dto.PickUpName,
+                    PickUpPhoneNumber = dto.PickUpPhoneNumber,
+                    PickUpEmail = dto.PickUpEmail,
+                    OrderDate = DateTime.Now,
+                    OrderTotal = dto.OrderTotal,
+                    Status = StaticDetails.StatusConfirmed,
+                    TotalItems = dto.TotalItems,
+                    ApplicationUserId = dto.ApplicationUserId
+                };
+
+                _dbContext.OrderHeaders.Add(orderHeader);
+                await _dbContext.SaveChangesAsync();
+
+                // Add order details.
+                foreach (OrderDetailsCreateDto orderDetailsDto in dto.OrderDetailsCreateDtos)
+                {
+                    OrderDetail orderDetail = new()
+                    {
+                        OrderHeaderId = orderHeader.OrderHeaderId,
+                        MenuItemId = orderDetailsDto.MenuItemId,
+                        Quantity = orderDetailsDto.Quantity,
+                        ItemName = orderDetailsDto.ItemName,
+                        Price = orderDetailsDto.Price,
+                    };
+
+                    _dbContext.OrderDetails.Add(orderDetail);
+                }
+
+                await _dbContext.SaveChangesAsync();
+
+                _apiResponse.IsSuccess = true;
+                _apiResponse.StatusCode = HttpStatusCode.Created;
+                _apiResponse.Result = orderHeader;
+                orderHeader.OrderDetails = await _dbContext.OrderDetails.Where(od => od.OrderHeaderId == orderHeader.OrderHeaderId).ToListAsync();
+                return CreatedAtAction(nameof(GetOrder), new { orderId = orderHeader.OrderHeaderId }, _apiResponse);
+            }
+            else
+            {
+                _apiResponse.IsSuccess = false;
+                _apiResponse.StatusCode = HttpStatusCode.BadRequest;
+                _apiResponse.ErrorMessage = [.. ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)];
+                return BadRequest(_apiResponse);
+            }
+        }
+        catch (Exception ex)
+        {
+            _apiResponse.StatusCode = HttpStatusCode.InternalServerError;
+            _apiResponse.IsSuccess = false;
+            _apiResponse.ErrorMessage = [ex.Message];
+            return StatusCode((int)HttpStatusCode.InternalServerError, _apiResponse);
+        }
     }
 }
