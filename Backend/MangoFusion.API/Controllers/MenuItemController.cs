@@ -52,7 +52,23 @@ public class MenuItemController : Controller
             return BadRequest(_apiResponse);
         }
 
-        _apiResponse.Result = await _dbContext.MenuItems.FirstOrDefaultAsync(m => m.Id == id);
+        var menuItem = await _dbContext.MenuItems.FirstOrDefaultAsync(m => m.Id == id);
+
+        if (menuItem is null)
+        {
+            _apiResponse.IsSuccess = false;
+            _apiResponse.StatusCode = HttpStatusCode.NotFound;
+            _apiResponse.ErrorMessage = ["Menu item not found"];
+            return NotFound(_apiResponse);
+        }
+
+        var orderDetails = await _dbContext.OrderDetails.Where(o => o.MenuItemId == menuItem.Id && o.Rating != null).ToListAsync();
+
+        var ratings = orderDetails.Where(o => o.MenuItemId == menuItem.Id).Select(o => o.Rating!.Value);
+        double averageRating = ratings.Any() ? ratings.Average() : 0;
+        menuItem.Rating = (int)Math.Round(averageRating);
+
+        _apiResponse.Result = menuItem;
         _apiResponse.StatusCode = HttpStatusCode.OK;
         return Ok(_apiResponse);
     }
