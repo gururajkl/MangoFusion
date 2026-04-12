@@ -1,11 +1,17 @@
+import { NavLink } from "react-router-dom";
+import { ROUTES } from "../../utility/constants";
+
 export default function Header() {
   return (
     <nav className="navbar navbar-expand-lg  border-bottom shadow-sm">
       <div className="container py-2">
-        <a href="/" className="navbar-brand d-flex align-items-center gap-2">
+        <NavLink
+          to={ROUTES.HOME}
+          className="navbar-brand d-flex align-items-center gap-2"
+        >
           <i className="bi bi-fire text-primary fs-4"></i>
           <span className="fw-bold">MangoFusion</span>
-        </a>
+        </NavLink>
         <button
           className="navbar-toggler"
           type="button"
@@ -20,17 +26,17 @@ export default function Header() {
         <div className="collapse navbar-collapse" id="mainNav">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <a href="#" className="nav-link">
+              <NavLink to={ROUTES.ORDER_MANAGEMENT} className="nav-link">
                 My Orders
-              </a>
+              </NavLink>
             </li>
           </ul>
           <ul className="navbar-nav ms-auto align-items-lg-center gap-lg-1">
             {/* Theme toggle visible for all users */}
 
             <li className="nav-item me-lg-2">
-              <a
-                href="#"
+              <NavLink
+                to={ROUTES.CART}
                 className={`nav-link position-relative d-flex align-items-center justify-content-center bg-primary-subtle border-0 rounded-circle `}
                 style={{ width: "44px", height: "44px" }}
               >
@@ -42,7 +48,7 @@ export default function Header() {
                 >
                   10
                 </span>
-              </a>
+              </NavLink>
             </li>
 
             <li className="nav-item dropdown">
@@ -69,22 +75,22 @@ export default function Header() {
               >
                 {/* Removed header (avatar/name/role) for a cleaner minimal dropdown */}
                 <li>
-                  <a
-                    href="#"
+                  <NavLink
+                    to={ROUTES.ORDER_MANAGEMENT}
                     className="dropdown-item d-flex align-items-center gap-2 rounded-2"
                   >
                     <i className="bi bi-speedometer2 text-primary"></i>
                     <span>Order Management</span>
-                  </a>
+                  </NavLink>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <NavLink
+                    to={ROUTES.MENU_MANAGEMENT}
                     className="dropdown-item d-flex align-items-center gap-2 rounded-2"
                   >
                     <i className="bi bi-list-ul text-primary"></i>
                     <span>Menu Management</span>
-                  </a>
+                  </NavLink>
                 </li>
                 <li>
                   <hr className="dropdown-divider my-2" />
@@ -98,14 +104,14 @@ export default function Header() {
               </ul>
             </li>
             <li className="nav-item">
-              <a href="#" className="nav-link">
+              <NavLink to={ROUTES.LOGIN} className="nav-link">
                 Login
-              </a>
+              </NavLink>
             </li>
             <li className="nav-item">
-              <a href="#" className="nav-link">
+              <NavLink to={ROUTES.REGISTER} className="nav-link">
                 Register
-              </a>
+              </NavLink>
             </li>
           </ul>
         </div>
