@@ -1,9 +1,10 @@
+import Header from "./components/layouts/Header";
 import ApplicationRoutes from "./components/routes/ApplicationRoutes";
 
 function App() {
   return (
     <div>
-      Hello
+      <Header />
       <ApplicationRoutes />
     </div>
   );
