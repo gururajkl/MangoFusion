@@ -8,3 +8,5 @@ export const ROUTES = {
   ORDER_MANAGEMENT: "/order-management",
   MENU_MANAGEMENT: "/menu-management",
 };
+
+export const API_BASE_URL = "https://localhost:7137/";
