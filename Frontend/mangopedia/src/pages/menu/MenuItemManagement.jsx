@@ -1,3 +1,4 @@
+import { useState } from "react";
 import MenuItemModal from "../../components/menuItem/MenuItemModal.jsx";
 import MenuItemTable from "../../components/menuItem/MenuItemTabel";
 import { useGetMenuItemsQuery } from "../../components/store/api/menuItemsApi.js";
@@ -6,6 +7,10 @@ export default function MenuItemManagement() {
   const { data: menuItems = [], isLoading, error } = useGetMenuItemsQuery();
 
   console.log(menuItems);
+
+  const [showModal, setShowModal] = useState(false);
+
+  const handleCloseShowModal = () => setShowModal(false);
 
   return (
     <div className="container-fluid p-4">
@@ -18,7 +23,10 @@ export default function MenuItemManagement() {
                 Manage your restaurant's menu items
               </p>
             </div>
-            <button className="btn btn-primary">
+            <button
+              onClick={() => setShowModal(true)}
+              className="btn btn-primary"
+            >
               <i className="bi bi-plus-circle me-2"></i>
               Add Menu Item
             </button>
@@ -38,7 +46,7 @@ export default function MenuItemManagement() {
           </div>
         </div>
       </div>
-      <MenuItemModal />
+      {showModal && <MenuItemModal onClose={handleCloseShowModal} />}
     </div>
   );
 }

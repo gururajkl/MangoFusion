@@ -1,4 +1,4 @@
-export default function MenuItemModal() {
+export default function MenuItemModal({ onClose }) {
   return (
     <>
       {/* Bootstrap Modal Backdrop */}
@@ -15,7 +15,12 @@ export default function MenuItemModal() {
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title">Add New Menu Item</h5>
-              <button type="button" className="btn-close" aria-label="Close" />
+              <button
+                onClick={() => onClose()}
+                type="button"
+                className="btn-close"
+                aria-label="Close"
+              />
             </div>
             <div className="modal-body">
               <form>
@@ -100,7 +105,11 @@ export default function MenuItemModal() {
                 </div>
 
                 <div className="d-flex justify-content-end gap-2">
-                  <button type="button" className="btn btn-secondary">
+                  <button
+                    onClick={() => onClose()}
+                    type="button"
+                    className="btn btn-secondary"
+                  >
                     Cancel
                   </button>
                   <button type="submit" className="btn btn-primary">
