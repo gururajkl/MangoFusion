@@ -1,3 +1,4 @@
+import MenuItemModal from "../../components/menuItem/MenuItemModal.jsx";
 import MenuItemTable from "../../components/menuItem/MenuItemTabel";
 import { useGetMenuItemsQuery } from "../../components/store/api/menuItemsApi.js";
 
@@ -37,7 +38,7 @@ export default function MenuItemManagement() {
           </div>
         </div>
       </div>
-      Menu Item Form Modal (Add/Edit)
+      <MenuItemModal />
     </div>
   );
 }
