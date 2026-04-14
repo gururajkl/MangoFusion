@@ -1,21 +1,33 @@
-export default function MenuItemTable() {
+export default function MenuItemTable({ menuItems, isLoading, error }) {
   return (
     <>
-      <div className="text-center py-4">
-        <div className="spinner-border" role="status">
-          <span className="visually-hidden">Loading...</span>
+      {isLoading && (
+        <div className="text-center py-4">
+          <div className="spinner-border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+          <p className="mt-2">Loading menu items...</p>
         </div>
-        <p className="mt-2">Loading menu items...</p>
-      </div>
-      <div className="alert alert-danger">
-        <h5>Error Loading Menu Items</h5>
-        <p>An error occurred while loading menu items.</p>
-      </div>
-      <div className="text-center py-5">
-        <i className="bi bi-basket text-muted" style={{ fontSize: "3rem" }}></i>
-        <h4 className="mt-3 text-muted">No Menu Items</h4>
-        <p className="text-muted">Start by adding your first menu item.</p>
-      </div>
+      )}
+
+      {error != null && (
+        <div className="alert alert-danger">
+          <h5>Error Loading Menu Items</h5>
+          <p>An error occurred while loading menu items.</p>
+        </div>
+      )}
+
+      {!menuItems?.length && (
+        <div className="text-center py-5">
+          <i
+            className="bi bi-basket text-muted"
+            style={{ fontSize: "3rem" }}
+          ></i>
+          <h4 className="mt-3 text-muted">No Menu Items</h4>
+          <p className="text-muted">Start by adding your first menu item.</p>
+        </div>
+      )}
+
       <div className="table-responsive">
         <table className="table table-hover">
           <thead className="table-dark">

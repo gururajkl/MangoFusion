@@ -2,7 +2,7 @@ import MenuItemTable from "../../components/menuItem/MenuItemTabel";
 import { useGetMenuItemsQuery } from "../../components/store/api/menuItemsApi.js";
 
 export default function MenuItemManagement() {
-  const { data: menuItems = [] } = useGetMenuItemsQuery();
+  const { data: menuItems = [], isLoading, error } = useGetMenuItemsQuery();
 
   console.log(menuItems);
 
@@ -28,7 +28,11 @@ export default function MenuItemManagement() {
         <div className="col">
           <div className="card">
             <div className="card-body">
-              <MenuItemTable />
+              <MenuItemTable
+                menuItems={menuItems}
+                isLoading={isLoading}
+                error={error}
+              />
             </div>
           </div>
         </div>
