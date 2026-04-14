@@ -9,4 +9,4 @@ export const ROUTES = {
   MENU_MANAGEMENT: "/menu-management",
 };
 
-export const API_BASE_URL = "https://localhost:7137/";
+export const API_BASE_URL = "https://localhost:7137";
