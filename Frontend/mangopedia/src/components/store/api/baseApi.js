@@ -1,5 +1,6 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { API_BASE_URL } from "../../../utility/constants";
+import "./menuItemsApi";
 
 // Base query function for RTK Query with authentication handling.
 const baseQuery = fetchBaseQuery({
