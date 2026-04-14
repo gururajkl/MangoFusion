@@ -1,3 +1,5 @@
+import { API_BASE_URL } from "../../utility/constants";
+
 export default function MenuItemTable({ menuItems, isLoading, error }) {
   return (
     <>
@@ -41,49 +43,53 @@ export default function MenuItemTable({ menuItems, isLoading, error }) {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>
-                <img
-                  src="https://placehold.co/600x400"
-                  className="rounded"
-                  style={{
-                    width: "50px",
-                    height: "50px",
-                    objectFit: "cover",
-                  }}
-                />
-              </td>
-              <td>
-                <strong>NAME</strong>
-                <br />
-                <small className="text-muted">DESC</small>
-              </td>
-              <td>
-                <span className="badge bg-secondary">CATEGORY</span>
-              </td>
-              <td>
-                <strong>$$</strong>
-              </td>
-              <td>
-                <span className="badge bg-warning text-dark">SPECIAL TAG</span>
-              </td>
-              <td>
-                <div className="btn-group" role="group">
-                  <button
-                    className="btn btn-sm btn-outline-success"
-                    title="Edit"
-                  >
-                    <i className="bi bi-pencil"></i>
-                  </button>
-                  <button
-                    className="btn btn-sm btn-outline-danger"
-                    title="Delete"
-                  >
-                    <i className="bi bi-trash"></i>
-                  </button>
-                </div>
-              </td>
-            </tr>
+            {menuItems.map((item) => (
+              <tr key={item.id}>
+                <td>
+                  <img
+                    src={`${API_BASE_URL}/${item.image}`}
+                    className="rounded"
+                    style={{
+                      width: "50px",
+                      height: "50px",
+                      objectFit: "cover",
+                    }}
+                  />
+                </td>
+                <td>
+                  <strong>{item.name}</strong>
+                  <br />
+                  <small className="text-muted">{item.description}</small>
+                </td>
+                <td>
+                  <span className="badge bg-secondary">{item.category}</span>
+                </td>
+                <td>
+                  <strong>{item.price}$</strong>
+                </td>
+                <td>
+                  <span className="badge bg-warning text-dark">
+                    {item.specialTag}
+                  </span>
+                </td>
+                <td>
+                  <div className="btn-group" role="group">
+                    <button
+                      className="btn btn-sm btn-outline-success"
+                      title="Edit"
+                    >
+                      <i className="bi bi-pencil"></i>
+                    </button>
+                    <button
+                      className="btn btn-sm btn-outline-danger"
+                      title="Delete"
+                    >
+                      <i className="bi bi-trash"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
