@@ -1,6 +1,11 @@
 import MenuItemTable from "../../components/menuItem/MenuItemTabel";
+import { useGetMenuItemsQuery } from "../../components/store/api/menuItemsApi.js";
 
 export default function MenuItemManagement() {
+  const { data: menuItems = [] } = useGetMenuItemsQuery();
+
+  console.log(menuItems);
+
   return (
     <div className="container-fluid p-4">
       <div className="row mb-4">

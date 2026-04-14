@@ -7,7 +7,15 @@ export const menuItemsApi = baseApi.injectEndpoints({
       query: () => "/MenuItem",
       providesTags: ["MenuItem"],
       transformResponse: (response) => {
-        return response;
+        if (response && response.result && Array.isArray(response.result)) {
+          return response.result;
+        }
+
+        if (response && Array.isArray(response)) {
+          return response;
+        }
+
+        return [];
       },
     }),
   }),
