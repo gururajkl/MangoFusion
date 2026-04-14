@@ -1,35 +1,38 @@
 import { API_BASE_URL } from "../../utility/constants";
 
 export default function MenuItemTable({ menuItems, isLoading, error }) {
+  if (isLoading) {
+    return (
+      <div className="text-center py-4">
+        <div className="spinner-border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+        <p className="mt-2">Loading menu items...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="alert alert-danger">
+        <h5>Error Loading Menu Items</h5>
+        <p>An error occurred while loading menu items.</p>
+      </div>
+    );
+  }
+
+  if (!menuItems?.length) {
+    return (
+      <div className="text-center py-5">
+        <i className="bi bi-basket text-muted" style={{ fontSize: "3rem" }}></i>
+        <h4 className="mt-3 text-muted">No Menu Items</h4>
+        <p className="text-muted">Start by adding your first menu item.</p>
+      </div>
+    );
+  }
+
   return (
     <>
-      {isLoading && (
-        <div className="text-center py-4">
-          <div className="spinner-border" role="status">
-            <span className="visually-hidden">Loading...</span>
-          </div>
-          <p className="mt-2">Loading menu items...</p>
-        </div>
-      )}
-
-      {error != null && (
-        <div className="alert alert-danger">
-          <h5>Error Loading Menu Items</h5>
-          <p>An error occurred while loading menu items.</p>
-        </div>
-      )}
-
-      {!menuItems?.length && (
-        <div className="text-center py-5">
-          <i
-            className="bi bi-basket text-muted"
-            style={{ fontSize: "3rem" }}
-          ></i>
-          <h4 className="mt-3 text-muted">No Menu Items</h4>
-          <p className="text-muted">Start by adding your first menu item.</p>
-        </div>
-      )}
-
       <div className="table-responsive">
         <table className="table table-hover">
           <thead className="table-dark">
@@ -53,6 +56,9 @@ export default function MenuItemTable({ menuItems, isLoading, error }) {
                       width: "50px",
                       height: "50px",
                       objectFit: "cover",
+                    }}
+                    onError={(e) => {
+                      e.target.src = "https://placehold.co/100";
                     }}
                   />
                 </td>
