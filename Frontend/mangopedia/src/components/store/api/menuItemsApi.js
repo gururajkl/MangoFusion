@@ -1,6 +1,6 @@
 import { baseApi } from "./baseApi";
 
-export const menuItemApi = baseApi.injectEndpoints({
+export const menuItemsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     // Get menu items.
     getMenuItems: builder.query({
@@ -13,4 +13,4 @@ export const menuItemApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetMenuItemsQuery } = menuItemApi;
+export const { useGetMenuItemsQuery } = menuItemsApi;
