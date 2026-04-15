@@ -73,14 +73,18 @@ app.UseStaticFiles();
 
 app.Run();
 
+// Adds JWT Bearer authentication support to OpenAPI (Swagger) documentation.
 internal sealed class BearerSecuritySchemeTransformer(IAuthenticationSchemeProvider provider) : IOpenApiDocumentTransformer
 {
     public async Task TransformAsync(OpenApiDocument document, OpenApiDocumentTransformerContext context, CancellationToken cancellationToken)
     {
+        // Get all registered authentication schemes.
         var authenticationScheme = await provider.GetAllSchemesAsync();
 
+        // Check if JWT Bearer authentication is configured.
         if (authenticationScheme.Any(a => a.Name == JwtBearerDefaults.AuthenticationScheme))
         {
+            // Define JWT Bearer security scheme for OpenAPI.
             var requirement = new Dictionary<string, IOpenApiSecurityScheme>
             {
                 [JwtBearerDefaults.AuthenticationScheme] = new OpenApiSecurityScheme
@@ -92,10 +96,12 @@ internal sealed class BearerSecuritySchemeTransformer(IAuthenticationSchemeProvi
                 }
             };
 
+            // Add security scheme to OpenAPI components.
             document.Components ??= new OpenApiComponents();
             document.Components.SecuritySchemes = requirement;
         }
 
+        // Set API metadata (title, version, description).
         document.Info = new()
         {
             Title = "MangoFusionAPI",
