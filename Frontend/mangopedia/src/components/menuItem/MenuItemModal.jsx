@@ -1,3 +1,5 @@
+import { CATEGORIES, SPECIAL_TAGS } from "../../utility/constants";
+
 export default function MenuItemModal({
   onClose,
   isSubmitting,
@@ -74,12 +76,17 @@ export default function MenuItemModal({
                       <select
                         className="form-select"
                         name="category"
-                        defaultValue=""
+                        onChange={onChange}
+                        value={formData.category || ""}
                       >
                         <option value="">Select Category</option>
-                        <option value="CATEGORY" key="CATEGORY">
-                          CATEGORY
-                        </option>
+                        {CATEGORIES.map((category) => {
+                          return (
+                            <option value={category} key={category}>
+                              {category}
+                            </option>
+                          );
+                        })}
                       </select>
                     </div>
                   </div>
@@ -106,7 +113,8 @@ export default function MenuItemModal({
                         name="price"
                         step="0.01"
                         min="0.01"
-                        defaultValue="10.00"
+                        onChange={onChange}
+                        value={formData.price || ""}
                       />
                     </div>
                   </div>
@@ -118,7 +126,13 @@ export default function MenuItemModal({
                         name="specialTag"
                         defaultValue=""
                       >
-                        TAGS
+                        {SPECIAL_TAGS.map((tag) => {
+                          return (
+                            <option value={tag} key={tag}>
+                              {tag}
+                            </option>
+                          );
+                        })}
                       </select>
                     </div>
                   </div>
