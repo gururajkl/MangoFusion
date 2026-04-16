@@ -1,4 +1,9 @@
-export default function MenuItemModal({ onClose, isSubmitting }) {
+export default function MenuItemModal({
+  onClose,
+  isSubmitting,
+  formData,
+  onSubmit,
+}) {
   return (
     <>
       {/* Bootstrap Modal Backdrop */}

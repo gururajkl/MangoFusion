@@ -11,6 +11,25 @@ export default function MenuItemManagement() {
   const [showModal, setShowModal] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const [formData, setFormData] = useState({
+    name: "",
+    category: "",
+    description: "",
+    price: "",
+    specialTag: "",
+    image: null,
+  });
+
+  const handleFormSubmit = (fromData) => {
+    try {
+      setIsSubmitting(true);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const handleCloseShowModal = () => setShowModal(false);
 
   return (
@@ -49,6 +68,8 @@ export default function MenuItemManagement() {
       </div>
       {showModal && (
         <MenuItemModal
+          formData={formData}
+          onSubmit={handleFormSubmit}
           onClose={handleCloseShowModal}
           isSubmitting={isSubmitting}
         />
