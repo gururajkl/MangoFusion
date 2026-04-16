@@ -9,6 +9,7 @@ export default function MenuItemManagement() {
   console.log(menuItems);
 
   const [showModal, setShowModal] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleCloseShowModal = () => setShowModal(false);
 
@@ -46,7 +47,12 @@ export default function MenuItemManagement() {
           </div>
         </div>
       </div>
-      {showModal && <MenuItemModal onClose={handleCloseShowModal} />}
+      {showModal && (
+        <MenuItemModal
+          onClose={handleCloseShowModal}
+          isSubmitting={isSubmitting}
+        />
+      )}
     </div>
   );
 }

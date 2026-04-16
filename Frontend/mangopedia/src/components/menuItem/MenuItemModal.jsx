@@ -1,4 +1,4 @@
-export default function MenuItemModal({ onClose }) {
+export default function MenuItemModal({ onClose, isSubmitting }) {
   return (
     <>
       {/* Bootstrap Modal Backdrop */}
@@ -112,9 +112,16 @@ export default function MenuItemModal({ onClose }) {
                   >
                     Cancel
                   </button>
-                  <button type="submit" className="btn btn-primary">
-                    <span className="spinner-border spinner-border-sm me-2" />
-                    CREATE MENU ITEM
+                  <button
+                    disabled={isSubmitting}
+                    type="submit"
+                    className="btn btn-primary"
+                  >
+                    {isSubmitting ? (
+                      <span className="spinner-border spinner-border-sm me-2" />
+                    ) : (
+                      <>CREATE MENU ITEM</>
+                    )}
                   </button>
                 </div>
               </form>
