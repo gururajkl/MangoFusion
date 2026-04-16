@@ -3,6 +3,7 @@ export default function MenuItemModal({
   isSubmitting,
   formData,
   onSubmit,
+  onChange,
 }) {
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -62,7 +63,8 @@ export default function MenuItemModal({
                         type="text"
                         className="form-control"
                         name="name"
-                        defaultValue=""
+                        onChange={onChange}
+                        value={formData.name || ""}
                       />
                     </div>
                   </div>
@@ -89,7 +91,8 @@ export default function MenuItemModal({
                     className="form-control"
                     name="description"
                     rows="3"
-                    defaultValue=""
+                    onChange={onChange}
+                    value={formData.description || ""}
                   />
                 </div>
 

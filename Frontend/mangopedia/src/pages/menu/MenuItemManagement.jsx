@@ -30,7 +30,23 @@ export default function MenuItemManagement() {
     }
   };
 
-  const handleCloseShowModal = () => setShowModal(false);
+  const handleCloseShowModal = () => {
+    setShowModal(false);
+    setFormData({
+      name: "",
+      category: "",
+      description: "",
+      price: "",
+      specialTag: "",
+      image: null,
+    });
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+    console.log(name, value);
+  };
 
   return (
     <div className="container-fluid p-4">
@@ -68,6 +84,7 @@ export default function MenuItemManagement() {
       </div>
       {showModal && (
         <MenuItemModal
+          onChange={handleInputChange}
           formData={formData}
           onSubmit={handleFormSubmit}
           onClose={handleCloseShowModal}
