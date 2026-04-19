@@ -3,9 +3,12 @@ import MenuItemModal from "../../components/menuItem/MenuItemModal.jsx";
 import MenuItemTable from "../../components/menuItem/MenuItemTabel";
 import {
   useCreateMenuItemMutation,
+  useDeleteMenuItemMutation,
   useGetMenuItemsQuery,
+  useUpdateMenuItemMutation,
 } from "../../components/store/api/menuItemsApi.js";
 import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 
 export default function MenuItemManagement() {
   const {
@@ -15,6 +18,8 @@ export default function MenuItemManagement() {
     refetch,
   } = useGetMenuItemsQuery();
   const [createMenuItem] = useCreateMenuItemMutation();
+  const [deleteMenuItem] = useDeleteMenuItemMutation();
+  const [updateMenuItem] = useUpdateMenuItemMutation();
 
   console.log(menuItems);
 
@@ -94,6 +99,27 @@ export default function MenuItemManagement() {
     });
   };
 
+  const handleDeleteMenuItem = async (itemId) => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    });
+
+    if (result.isConfirmed) {
+      await deleteMenuItem(itemId);
+      Swal.fire({
+        title: "Deleted!",
+        text: "Your menu item has been deleted.",
+        icon: "success",
+      });
+    }
+  };
+
   return (
     <div className="container-fluid p-4">
       <div className="row mb-4">
@@ -120,6 +146,7 @@ export default function MenuItemManagement() {
           <div className="card">
             <div className="card-body">
               <MenuItemTable
+                onDelete={handleDeleteMenuItem}
                 menuItems={menuItems}
                 isLoading={isLoading}
                 error={error}
