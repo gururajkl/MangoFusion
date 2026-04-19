@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import { CATEGORIES, SPECIAL_TAGS } from "../../utility/constants";
 
 export default function MenuItemModal({
@@ -11,12 +12,12 @@ export default function MenuItemModal({
     e.preventDefault();
 
     if (!formData.name?.trim()) {
-      console.log("Name is required");
+      toast.error("Name is required");
       return;
     }
 
     if (!formData.category?.trim()) {
-      console.log("Category is required");
+      toast.error("Category is required");
       return;
     }
 
@@ -25,7 +26,7 @@ export default function MenuItemModal({
       parseFloat(formData.price) <= 0 ||
       parseFloat(formData.price) > 1000
     ) {
-      console.log("Invalid price");
+      toast.error("Invalid price");
       return;
     }
 
