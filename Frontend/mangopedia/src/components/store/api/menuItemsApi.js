@@ -38,9 +38,9 @@ export const menuItemsApi = baseApi.injectEndpoints({
     }),
 
     updateMenuItem: builder.mutation({
-      query: (formData) => ({
-        url: "/MenuItem",
-        method: "POST",
+      query: ({ id, formData }) => ({
+        url: `/MenuItem?id=${id}`,
+        method: "PUT",
         body: formData,
       }),
       invalidatesTags: ["MenuItem"],
@@ -48,4 +48,9 @@ export const menuItemsApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetMenuItemsQuery, useCreateMenuItemMutation } = menuItemsApi;
+export const {
+  useGetMenuItemsQuery,
+  useCreateMenuItemMutation,
+  useDeleteMenuItemMutation,
+  useUpdateMenuItemMutation,
+} = menuItemsApi;
