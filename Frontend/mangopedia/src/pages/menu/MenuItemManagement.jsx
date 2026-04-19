@@ -5,9 +5,15 @@ import {
   useCreateMenuItemMutation,
   useGetMenuItemsQuery,
 } from "../../components/store/api/menuItemsApi.js";
+import { toast } from "react-toastify";
 
 export default function MenuItemManagement() {
-  const { data: menuItems = [], isLoading, error } = useGetMenuItemsQuery();
+  const {
+    data: menuItems = [],
+    isLoading,
+    error,
+    refetch,
+  } = useGetMenuItemsQuery();
   const [createMenuItem] = useCreateMenuItemMutation();
 
   console.log(menuItems);
@@ -43,9 +49,20 @@ export default function MenuItemManagement() {
 
       let result;
       result = await createMenuItem(formDataToSend);
-      console.log("API response:", result);
+
+      if (result.isSuccess !== false) {
+        toast.success("Menu item created successfully!");
+        // Calls query again.
+        refetch();
+      } else {
+        toast.error("Failed to create menu item. Please try again.");
+      }
+
+      setShowModal(false);
+      resetForm();
     } catch (error) {
       console.error(error);
+      toast.error("Failed to create menu item. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -53,14 +70,7 @@ export default function MenuItemManagement() {
 
   const handleCloseShowModal = () => {
     setShowModal(false);
-    setFormData({
-      name: "",
-      category: "",
-      description: "",
-      price: "",
-      specialTag: "",
-      image: null,
-    });
+    resetForm();
   };
 
   const handleInputChange = (e) => {
@@ -71,6 +81,17 @@ export default function MenuItemManagement() {
     } else {
       setFormData((prevData) => ({ ...prevData, [name]: value }));
     }
+  };
+
+  const resetForm = () => {
+    setFormData({
+      name: "",
+      category: "",
+      description: "",
+      price: "",
+      specialTag: "",
+      image: null,
+    });
   };
 
   return (
