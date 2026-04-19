@@ -9,16 +9,15 @@ export default function MenuItemModal({
   onChange,
 }) {
   const handleSubmit = (e) => {
+    const errors = [];
     e.preventDefault();
 
     if (!formData.name?.trim()) {
-      toast.error("Name is required");
-      return;
+      errors.push("Name is required");
     }
 
     if (!formData.category?.trim()) {
-      toast.error("Category is required");
-      return;
+      errors.push("Category is required");
     }
 
     if (
@@ -26,7 +25,20 @@ export default function MenuItemModal({
       parseFloat(formData.price) <= 0 ||
       parseFloat(formData.price) > 1000
     ) {
-      toast.error("Invalid price");
+      errors.push("Invalid price");
+    }
+
+    if (errors.length > 0) {
+      toast.error(
+        <div>
+          <strong>Please correct the following errors:</strong>
+          <ul className="mb-0 mt-1 ps-3">
+            {errors.map((error, index) => (
+              <li key={index}>{error}</li>
+            ))}
+          </ul>
+        </div>,
+      );
       return;
     }
 
