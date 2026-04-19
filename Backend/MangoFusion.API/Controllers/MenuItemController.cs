@@ -162,6 +162,7 @@ public class MenuItemController : Controller
                 menuItemFromDb.Description = menuItemUpdateDto.Description;
                 menuItemFromDb.Price = menuItemUpdateDto.Price;
                 menuItemFromDb.SpecialTag = menuItemUpdateDto.SpecialTag;
+                menuItemFromDb.Category = menuItemUpdateDto.Category;
 
                 if (menuItemUpdateDto.File is { Length: > 0 })
                 {
@@ -187,15 +188,15 @@ public class MenuItemController : Controller
                     await menuItemUpdateDto.File.CopyToAsync(fileStream);
 
                     menuItemFromDb.Image = $"images/{menuItemUpdateDto.File.FileName}";
-
-                    _dbContext.Update(menuItemFromDb);
-                    await _dbContext.SaveChangesAsync();
-
-                    _apiResponse.StatusCode = HttpStatusCode.NoContent;
-                    _apiResponse.IsSuccess = true;
-
-                    return Ok(_apiResponse);
                 }
+
+                _dbContext.Update(menuItemFromDb);
+                await _dbContext.SaveChangesAsync();
+
+                _apiResponse.StatusCode = HttpStatusCode.NoContent;
+                _apiResponse.IsSuccess = true;
+
+                return Ok(_apiResponse);
             }
             else
             {
