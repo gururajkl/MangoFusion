@@ -7,6 +7,7 @@ export default function MenuItemModal({
   formData,
   onSubmit,
   onChange,
+  isEditing,
 }) {
   const handleSubmit = (e) => {
     const errors = [];
@@ -60,7 +61,9 @@ export default function MenuItemModal({
         <div className={`modal-dialog modal-lg`} role="document">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title">Add New Menu Item</h5>
+              <h5 className="modal-title">
+                {isEditing ? "Edit" : "Add New"} Menu Item
+              </h5>
               <button
                 onClick={() => onClose()}
                 type="button"
@@ -137,7 +140,7 @@ export default function MenuItemModal({
                       <select
                         className="form-select"
                         name="specialTag"
-                        defaultValue=""
+                        value={formData.specialTag || ""}
                         onChange={onChange}
                       >
                         {SPECIAL_TAGS.map((tag) => {
@@ -182,7 +185,7 @@ export default function MenuItemModal({
                     {isSubmitting ? (
                       <span className="spinner-border spinner-border-sm me-2" />
                     ) : (
-                      <>CREATE MENU ITEM</>
+                      <>{isEditing ? "UPDATE" : "CREATE"} MENU ITEM</>
                     )}
                   </button>
                 </div>

@@ -25,6 +25,7 @@ export default function MenuItemManagement() {
 
   const [showModal, setShowModal] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -53,21 +54,42 @@ export default function MenuItemManagement() {
       }
 
       let result;
-      result = await createMenuItem(formDataToSend);
+
+      if (selectedItem) {
+        formDataToSend.append("Id", selectedItem.id);
+        result = await updateMenuItem({
+          id: selectedItem.id,
+          formData: formDataToSend,
+        });
+      } else {
+        result = await createMenuItem(formDataToSend);
+      }
 
       if (result.isSuccess !== false) {
-        toast.success("Menu item created successfully!");
+        toast.success(
+          selectedItem
+            ? "Menu item updated successfully!"
+            : "Menu item created successfully!",
+        );
         // Calls query again.
         refetch();
       } else {
-        toast.error("Failed to create menu item. Please try again.");
+        toast.error(
+          selectedItem
+            ? "Failed to update menu item. Please try again."
+            : "Failed to create menu item. Please try again.",
+        );
       }
 
       setShowModal(false);
       resetForm();
     } catch (error) {
       console.error(error);
-      toast.error("Failed to create menu item. Please try again.");
+      toast.error(
+        selectedItem
+          ? "Failed to update menu item. Please try again."
+          : "Failed to create menu item. Please try again.",
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -120,6 +142,25 @@ export default function MenuItemManagement() {
     }
   };
 
+  const handleAddMenuItem = () => {
+    setSelectedItem(null);
+    resetForm();
+    setShowModal(true);
+  };
+
+  const handleEditMenuItem = (item) => {
+    setFormData({
+      name: item.name || "",
+      category: item.category || "",
+      description: item.description || "",
+      price: item.price || "",
+      specialTag: item.specialTag || "",
+      image: null,
+    });
+    setSelectedItem(item);
+    setShowModal(true);
+  };
+
   return (
     <div className="container-fluid p-4">
       <div className="row mb-4">
@@ -131,10 +172,7 @@ export default function MenuItemManagement() {
                 Manage your restaurant's menu items
               </p>
             </div>
-            <button
-              onClick={() => setShowModal(true)}
-              className="btn btn-primary"
-            >
+            <button onClick={handleAddMenuItem} className="btn btn-primary">
               <i className="bi bi-plus-circle me-2"></i>
               Add Menu Item
             </button>
@@ -147,6 +185,7 @@ export default function MenuItemManagement() {
             <div className="card-body">
               <MenuItemTable
                 onDelete={handleDeleteMenuItem}
+                onEdit={handleEditMenuItem}
                 menuItems={menuItems}
                 isLoading={isLoading}
                 error={error}
@@ -162,6 +201,7 @@ export default function MenuItemManagement() {
           onSubmit={handleFormSubmit}
           onClose={handleCloseShowModal}
           isSubmitting={isSubmitting}
+          isEditing={!!selectedItem}
         />
       )}
     </div>

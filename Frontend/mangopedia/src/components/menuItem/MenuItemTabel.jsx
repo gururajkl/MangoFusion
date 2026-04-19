@@ -5,6 +5,7 @@ export default function MenuItemTable({
   isLoading,
   error,
   onDelete,
+  onEdit,
 }) {
   if (isLoading) {
     return (
@@ -88,6 +89,7 @@ export default function MenuItemTable({
                     <button
                       className="btn btn-sm btn-outline-success"
                       title="Edit"
+                      onClick={() => onEdit(item)}
                     >
                       <i className="bi bi-pencil"></i>
                     </button>
