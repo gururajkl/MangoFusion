@@ -138,6 +138,7 @@ export default function MenuItemModal({
                         className="form-select"
                         name="specialTag"
                         defaultValue=""
+                        onChange={onChange}
                       >
                         {SPECIAL_TAGS.map((tag) => {
                           return (
@@ -157,6 +158,7 @@ export default function MenuItemModal({
                     type="file"
                     className="form-control"
                     name="image"
+                    onChange={onChange}
                     accept="image/*"
                   />
                   <div className="form-text">
