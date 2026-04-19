@@ -1,4 +1,10 @@
+import { data } from "react-router-dom";
+import { useGetMenuItemsQuery } from "../components/store/api/menuItemsApi";
+import { API_BASE_URL } from "../utility/constants";
+
 export default function Home() {
+  const { data: menuItems = [], isLoading, error } = useGetMenuItemsQuery();
+
   return (
     <div className="container-fluid px-0 py-4">
       {/* Hero Section */}
@@ -28,112 +34,126 @@ export default function Home() {
             </select>
           </div>
         </div>
+
         {/* Loading State */}
-        <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4 mb-5">
-          <div className="col">
-            <div className="card h-100 placeholder-glow">
-              <div
-                className="card-img-top bg-body-secondary"
-                style={{ height: "180px" }}
-              ></div>
-              <div className="card-body">
-                <h5 className="card-title placeholder col-6"></h5>
-                <p className="card-text placeholder col-9"></p>
-                <p className="card-text placeholder col-4"></p>
-                <div className="d-flex gap-2 mt-3">
-                  <span className="placeholder btn btn-primary disabled col-6"></span>
-                  <span className="placeholder btn btn-outline-primary disabled col-6"></span>
+        {isLoading && (
+          <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4 mb-5">
+            <div className="col">
+              <div className="card h-100 placeholder-glow">
+                <div
+                  className="card-img-top bg-body-secondary"
+                  style={{ height: "180px" }}
+                ></div>
+                <div className="card-body">
+                  <h5 className="card-title placeholder col-6"></h5>
+                  <p className="card-text placeholder col-9"></p>
+                  <p className="card-text placeholder col-4"></p>
+                  <div className="d-flex gap-2 mt-3">
+                    <span className="placeholder btn btn-primary disabled col-6"></span>
+                    <span className="placeholder btn btn-outline-primary disabled col-6"></span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div className="alert alert-danger" role="alert">
-          Error loading menu items: Unknown error
-        </div>
-        <div className="text-center py-5">
-          <h4>No menu items found</h4>
-          <p className="text-muted">
-            Try adjusting your search or filter criteria
-          </p>
-        </div>
-        <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4 mb-5">
-          <div className="col">
-            <div className="card h-100 border shadow-sm position-relative">
-              <div className="position-relative overflow-hidden rounded-top">
-                <img
-                  className="card-img-top"
-                  src="https://placehold.co/300"
-                  style={{
-                    height: "220px",
-                    objectFit: "cover",
-                    transition: "transform 0.3s ease",
-                  }}
-                />
+        )}
 
-                <div className="position-absolute top-0 end-0 m-3">
-                  <span className="badge bg-warning text-dark px-3 py-1 rounded-3 shadow-sm fw-semibold">
-                    SPECIAL TAG
-                  </span>
-                </div>
-              </div>
-
-              <div className="card-body d-flex flex-column p-4">
-                <div className="d-flex justify-content-between align-items-center mb-3">
-                  <h5 className="card-title fw-bold mb-0 text-dark lh-sm flex-grow-1 me-3">
-                    NAME
-                  </h5>
-                  <div className="h4 text-primary fw-bold mb-0 flex-shrink-0">
-                    $$
-                  </div>
-                </div>
-
-                {/* Category and Rating Row */}
-                <div className="d-flex justify-content-between align-items-center mb-3">
-                  <span className="badge text-secondary border px-2 py-1 small">
-                    CATEGORY
-                  </span>
-                </div>
-
-                {/* Description */}
-                <p
-                  className="card-text text-muted mb-4 flex-grow-1"
-                  style={{ fontSize: "0.9rem", lineHeight: "1.5" }}
-                >
-                  DESC
-                </p>
-
-                {/* Action Buttons */}
-                <div className="mt-auto">
-                  <div className="row g-2">
-                    <div className="col-6">
-                      <a
-                        href="#"
-                        className="btn btn-outline-primary w-100 btn-sm fw-semibold"
-                      >
-                        <i className="bi bi-info-circle me-1"></i>Details
-                      </a>
-                    </div>
-                    <div className="col-6">
-                      <button className="btn btn-primary w-100 btn-sm fw-semibold">
-                        <i className="bi bi-cart-plus me-1"></i>Add Cart
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div
-                className="position-absolute bottom-0 start-0 w-100"
-                style={{
-                  height: "3px",
-                  background:
-                    "linear-gradient(90deg, var(--bs-primary), transparent)",
-                }}
-              ></div>
-            </div>
+        {error && (
+          <div className="alert alert-danger" role="alert">
+            Error loading menu items. Please try again later.
           </div>
-        </div>
+        )}
+
+        {!isLoading && !error && data && data.length === 0 ? (
+          <div className="text-center py-5">
+            <h4>No menu items found</h4>
+            <p className="text-muted">
+              Try adjusting your search or filter criteria
+            </p>
+          </div>
+        ) : (
+          <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4 mb-5">
+            {menuItems.map((item) => (
+              <div key={item.id} className="col">
+                <div className="card h-100 border shadow-sm position-relative">
+                  <div className="position-relative overflow-hidden rounded-top">
+                    <img
+                      className="card-img-top"
+                      src={`${API_BASE_URL}/${item.image}`}
+                      style={{
+                        height: "220px",
+                        objectFit: "cover",
+                        transition: "transform 0.3s ease",
+                      }}
+                    />
+
+                    <div className="position-absolute top-0 end-0 m-3">
+                      <span className="badge bg-warning text-dark px-3 py-1 rounded-3 shadow-sm fw-semibold">
+                        {item.specialTag || ""}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="card-body d-flex flex-column p-4">
+                    <div className="d-flex justify-content-between align-items-center mb-3">
+                      <h5 className="card-title fw-bold mb-0 text-dark lh-sm flex-grow-1 me-3">
+                        {item.name}
+                      </h5>
+                      <div className="h4 text-primary fw-bold mb-0 flex-shrink-0">
+                        ${item.price.toFixed(2)}
+                      </div>
+                    </div>
+
+                    {/* Category and Rating Row */}
+                    <div className="d-flex justify-content-between align-items-center mb-3">
+                      <span className="badge text-secondary border px-2 py-1 small">
+                        {item.category || ""}
+                      </span>
+                    </div>
+
+                    {/* Description */}
+                    <p
+                      className="card-text text-muted mb-4 flex-grow-1"
+                      style={{ fontSize: "0.9rem", lineHeight: "1.5" }}
+                    >
+                      {item.description.length > 90
+                        ? item.description.substring(0, 90) + "..."
+                        : item.description || ""}
+                    </p>
+
+                    {/* Action Buttons */}
+                    <div className="mt-auto">
+                      <div className="row g-2">
+                        <div className="col-6">
+                          <a
+                            href="#"
+                            className="btn btn-outline-primary w-100 btn-sm fw-semibold"
+                          >
+                            <i className="bi bi-info-circle me-1"></i>Details
+                          </a>
+                        </div>
+                        <div className="col-6">
+                          <button className="btn btn-primary w-100 btn-sm fw-semibold">
+                            <i className="bi bi-cart-plus me-1"></i>Add Cart
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    className="position-absolute bottom-0 start-0 w-100"
+                    style={{
+                      height: "3px",
+                      background:
+                        "linear-gradient(90deg, var(--bs-primary), transparent)",
+                    }}
+                  ></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
 
         {/* Features Section */}
         <section className="py-5 border-top">
