@@ -29,6 +29,7 @@ export const menuItemsApi = baseApi.injectEndpoints({
       invalidatesTags: ["MenuItem"],
     }),
 
+    // Delete menu items.
     deleteMenuItem: builder.mutation({
       query: (id) => ({
         url: `/MenuItem?id=${id}`,
@@ -37,6 +38,7 @@ export const menuItemsApi = baseApi.injectEndpoints({
       invalidatesTags: ["MenuItem"],
     }),
 
+    // Update menu items.
     updateMenuItem: builder.mutation({
       query: ({ id, formData }) => ({
         url: `/MenuItem?id=${id}`,
