@@ -1,10 +1,14 @@
 import { useState } from "react";
 import MenuItemModal from "../../components/menuItem/MenuItemModal.jsx";
 import MenuItemTable from "../../components/menuItem/MenuItemTabel";
-import { useGetMenuItemsQuery } from "../../components/store/api/menuItemsApi.js";
+import {
+  useCreateMenuItemMutation,
+  useGetMenuItemsQuery,
+} from "../../components/store/api/menuItemsApi.js";
 
 export default function MenuItemManagement() {
   const { data: menuItems = [], isLoading, error } = useGetMenuItemsQuery();
+  const [createMenuItem] = useCreateMenuItemMutation();
 
   console.log(menuItems);
 
@@ -20,10 +24,26 @@ export default function MenuItemManagement() {
     image: null,
   });
 
-  const handleFormSubmit = (fromData) => {
+  const handleFormSubmit = async (fromData) => {
     try {
       setIsSubmitting(true);
       console.log("Form submitted with data:", fromData);
+
+      // Construct FormData to send to the API.
+      const formDataToSend = new FormData();
+      formDataToSend.append("Name", formData.name);
+      formDataToSend.append("Category", formData.category);
+      formDataToSend.append("Description", formData.description);
+      formDataToSend.append("Price", formData.price);
+      formDataToSend.append("SpecialTag", formData.specialTag);
+
+      if (formData.image) {
+        formDataToSend.append("File", formData.image);
+      }
+
+      let result;
+      result = await createMenuItem(formDataToSend);
+      console.log("API response:", result);
     } catch (error) {
       console.error(error);
     } finally {
