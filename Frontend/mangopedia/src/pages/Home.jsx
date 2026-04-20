@@ -1,9 +1,13 @@
 import { data } from "react-router-dom";
 import { useGetMenuItemsQuery } from "../components/store/api/menuItemsApi";
 import { API_BASE_URL, CATEGORIES } from "../utility/constants";
+import { useState } from "react";
 
 export default function Home() {
   const { data: menuItems = [], isLoading, error } = useGetMenuItemsQuery();
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("All");
 
   return (
     <div className="container-fluid px-0 py-4">
@@ -20,15 +24,20 @@ export default function Home() {
               type="text"
               className="form-control"
               placeholder="Search menu items..."
-              defaultValue=""
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
           <div className="col-md-6">
             <label className="form-label fw-semibold text-muted small text-uppercase">
               Category
             </label>
-            <select className="form-select" defaultValue="">
-              <option value="">Select Category</option>
+            <select
+              className="form-select"
+              value={categoryFilter}
+              onChange={(e) => setCategoryFilter(e.target.value)}
+            >
+              <option value="All">All Categories</option>
               {CATEGORIES.map((category) => {
                 return (
                   <option value={category} key={category}>
