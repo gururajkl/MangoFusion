@@ -1,6 +1,6 @@
 import { data } from "react-router-dom";
 import { useGetMenuItemsQuery } from "../components/store/api/menuItemsApi";
-import { API_BASE_URL } from "../utility/constants";
+import { API_BASE_URL, CATEGORIES } from "../utility/constants";
 
 export default function Home() {
   const { data: menuItems = [], isLoading, error } = useGetMenuItemsQuery();
@@ -28,9 +28,14 @@ export default function Home() {
               Category
             </label>
             <select className="form-select" defaultValue="">
-              <option key="category" value="category">
-                category
-              </option>
+              <option value="">Select Category</option>
+              {CATEGORIES.map((category) => {
+                return (
+                  <option value={category} key={category}>
+                    {category}
+                  </option>
+                );
+              })}
             </select>
           </div>
         </div>
