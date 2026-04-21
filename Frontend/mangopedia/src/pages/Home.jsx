@@ -1,4 +1,3 @@
-import { data } from "react-router-dom";
 import { useGetMenuItemsQuery } from "../components/store/api/menuItemsApi";
 import { API_BASE_URL, CATEGORIES } from "../utility/constants";
 import { useState } from "react";
@@ -8,6 +7,18 @@ export default function Home() {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("All");
+
+  const filteredItems = menuItems.filter((item) => {
+    const searchMatch = searchTerm
+      ? item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.description.toLowerCase().includes(searchTerm.toLowerCase())
+      : true;
+
+    const categoryMatch =
+      categoryFilter == "All" || categoryFilter == item.category;
+
+    return searchMatch && categoryMatch;
+  });
 
   return (
     <div className="container-fluid px-0 py-4">
@@ -78,7 +89,7 @@ export default function Home() {
           </div>
         )}
 
-        {!isLoading && !error && data && data.length === 0 ? (
+        {!isLoading && !error && filteredItems && filteredItems.length === 0 ? (
           <div className="text-center py-5">
             <h4>No menu items found</h4>
             <p className="text-muted">
@@ -87,7 +98,7 @@ export default function Home() {
           </div>
         ) : (
           <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4 mb-5">
-            {menuItems.map((item) => (
+            {filteredItems.map((item) => (
               <div key={item.id} className="col">
                 <div className="card h-100 border shadow-sm position-relative">
                   <div className="position-relative overflow-hidden rounded-top">
