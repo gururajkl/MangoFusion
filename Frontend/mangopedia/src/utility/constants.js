@@ -7,6 +7,7 @@ export const ROUTES = {
   ORDER_CONFIRMATION: "/order-confirmation",
   ORDER_MANAGEMENT: "/order-management",
   MENU_MANAGEMENT: "/menu-management",
+  MENU_DETAIL: "/menu/:id",
 };
 
 export const API_BASE_URL = "https://localhost:7137";
