@@ -8,6 +8,7 @@ import MenuItemManagement from "../../pages/menu/MenuItemManagement";
 import Cart from "../../pages/cart/Cart";
 import Checkout from "../../pages/cart/Checkout";
 import OrderConfirmation from "../../pages/order/OrderConfirmation";
+import MenuItemDetails from "../../pages/menu/MenuItemDetails";
 
 const ApplicationRoutes = () => {
   return (
@@ -20,6 +21,7 @@ const ApplicationRoutes = () => {
       <Route path={ROUTES.CART} element={<Cart />} />
       <Route path={ROUTES.CHECKOUT} element={<Checkout />} />
       <Route path={ROUTES.ORDER_CONFIRMATION} element={<OrderConfirmation />} />
+      <Route path={ROUTES.MENU_DETAIL} element={<MenuItemDetails />} />
     </Routes>
   );
 };
