@@ -15,17 +15,21 @@ public class MenuItemController : Controller
     private readonly ApplicationDbContext _dbContext;
     private readonly ApiResponse _apiResponse;
     private readonly IWebHostEnvironment _webHostEnvironment;
+    private readonly ILogger<MenuItemController> _logger;
 
-    public MenuItemController(ApplicationDbContext dbContext, IWebHostEnvironment webHostEnvironment)
+    public MenuItemController(ApplicationDbContext dbContext, IWebHostEnvironment webHostEnvironment, ILogger<MenuItemController> logger)
     {
         _dbContext = dbContext;
         _webHostEnvironment = webHostEnvironment;
         _apiResponse = new ApiResponse();
+        _logger = logger;
     }
 
     [HttpGet]
     public async Task<IActionResult> GetMenuItems()
     {
+        _logger.LogInformation("Getting all menu items information");
+
         var menuItems = await _dbContext.MenuItems.ToListAsync();
         var orderDetails = await _dbContext.OrderDetails.Where(o => o.Rating != null).ToListAsync();
 
@@ -44,8 +48,12 @@ public class MenuItemController : Controller
     [HttpGet("{id:int}", Name = "GetMenuItem")]
     public async Task<IActionResult> GetMenuItem(int id)
     {
+        _logger.LogInformation("Getting menu item information with id: {Id}", id);
+
         if (id <= 0)
         {
+            _logger.LogError("Invalid id passes, menu item with {Id} not found", id);
+
             _apiResponse.IsSuccess = false;
             _apiResponse.StatusCode = HttpStatusCode.BadRequest;
             _apiResponse.ErrorMessage = ["Invalid id"];
@@ -56,6 +64,8 @@ public class MenuItemController : Controller
 
         if (menuItem is null)
         {
+            _logger.LogError("Invalid id passes, menu item with {Id} not found", id);
+
             _apiResponse.IsSuccess = false;
             _apiResponse.StatusCode = HttpStatusCode.NotFound;
             _apiResponse.ErrorMessage = ["Menu item not found"];
@@ -80,6 +90,8 @@ public class MenuItemController : Controller
         {
             if (ModelState.IsValid)
             {
+                _logger.LogInformation("Cannot create menu item, please recheck the model state");
+
                 if (menuItemCreateDto.File is { Length: <= 0 })
                 {
                     _apiResponse.IsSuccess = false;
@@ -141,6 +153,8 @@ public class MenuItemController : Controller
         {
             if (ModelState.IsValid)
             {
+                _logger.LogInformation("Cannot update menu item, please recheck the model state");
+
                 if (menuItemUpdateDto is null || menuItemUpdateDto.Id != id)
                 {
                     _apiResponse.IsSuccess = false;
@@ -206,6 +220,8 @@ public class MenuItemController : Controller
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "Error updating the menu item");
+
             _apiResponse.IsSuccess = false;
             _apiResponse.ErrorMessage = [ex.ToString()];
         }
@@ -260,6 +276,8 @@ public class MenuItemController : Controller
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "Error deleting the menu item");
+
             _apiResponse.IsSuccess = false;
             _apiResponse.ErrorMessage = [ex.ToString()];
         }
