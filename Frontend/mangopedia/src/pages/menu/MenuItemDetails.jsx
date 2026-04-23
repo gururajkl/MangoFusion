@@ -1,12 +1,14 @@
 import { useParams } from "react-router-dom";
 import { useGetMenuItemByIdQuery } from "../../components/store/api/menuItemsApi";
 import { API_BASE_URL } from "../../utility/constants";
+import { useState } from "react";
 
 export default function MenuItemDetails() {
   const { id } = useParams();
   const ItemId = parseInt(id);
   const isValidItemId = !isNaN(ItemId) && ItemId > 0;
-  console.log("MenuItemDetails - Item ID:", ItemId, "Valid:", isValidItemId);
+
+  const [quantity, setQuantity] = useState(1);
 
   const {
     data: selectedMenuItem,
@@ -150,6 +152,8 @@ export default function MenuItemDetails() {
                         <button
                           className="btn btn-outline-secondary"
                           type="button"
+                          disabled={quantity <= 1}
+                          onClick={() => setQuantity(Math.max(1, quantity - 1))}
                         >
                           <i className="bi bi-dash"></i>
                         </button>
@@ -158,11 +162,23 @@ export default function MenuItemDetails() {
                           className="form-control text-center fw-semibold"
                           min="1"
                           max="10"
-                          defaultValue={1}
+                          value={quantity}
+                          onChange={(e) =>
+                            setQuantity(
+                              Math.max(
+                                1,
+                                Math.min(10, parseInt(e.target.value)),
+                              ),
+                            )
+                          }
                         />
                         <button
                           className="btn btn-outline-secondary"
                           type="button"
+                          disabled={quantity >= 10}
+                          onClick={() =>
+                            setQuantity(Math.min(10, quantity + 1))
+                          }
                         >
                           <i className="bi bi-plus"></i>
                         </button>
