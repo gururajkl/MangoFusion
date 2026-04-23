@@ -203,11 +203,13 @@ export default function MenuItemDetails() {
                   <div className="mt-3 p-3  rounded border">
                     <div className="row">
                       <div className="col-6">
-                        <small className="text-muted">Subtotal ($$)</small>
+                        <small className="text-muted">
+                          Subtotal ({quantity} item{quantity === 1 ? "" : "s"})
+                        </small>
                       </div>
                       <div className="col-6 text-end">
                         <span className="fw-bold text-primary h5 mb-0">
-                          price * quantity
+                          ${(selectedMenuItem.price * quantity).toFixed(2)}
                         </span>
                       </div>
                     </div>
