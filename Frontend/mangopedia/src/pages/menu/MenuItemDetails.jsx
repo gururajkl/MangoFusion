@@ -188,7 +188,7 @@ export default function MenuItemDetails() {
                       <div className="d-grid gap-2">
                         <button className="btn btn-primary btn-lg fw-semibold shadow-sm">
                           <i className="bi bi-cart-plus me-2"></i>
-                          Add to Cart -
+                          Add to Cart
                         </button>
 
                         <button className="btn btn-outline-primary">
