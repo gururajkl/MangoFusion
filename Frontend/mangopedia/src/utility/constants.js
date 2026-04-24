@@ -21,3 +21,5 @@ export const SPECIAL_TAGS = [
   "",
   "Best Seller",
 ];
+
+export const ROLES = { CUSTOMER: "Customer", ADMIN: "Admin" };
