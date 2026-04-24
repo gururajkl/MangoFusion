@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ROUTES } from "../../utility/constants";
+import { ROLES, ROUTES } from "../../utility/constants";
 
 export default function Register() {
   return (
@@ -110,8 +110,8 @@ export default function Register() {
                       Role
                     </label>
                     <select className="form-select" id="role" name="role">
-                      <option value="Customer">Customer</option>
-                      <option value="Admin">Admin</option>
+                      <option value={ROLES.CUSTOMER}>{ROLES.CUSTOMER}</option>
+                      <option value={ROLES.ADMIN}>{ROLES.ADMIN}</option>
                     </select>
                   </div>
 
