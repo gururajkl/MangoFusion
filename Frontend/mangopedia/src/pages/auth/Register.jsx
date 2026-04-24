@@ -21,6 +21,11 @@ export default function Register() {
     });
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(formData);
+  };
+
   return (
     <>
       <div className="min-vh-100 d-flex align-items-center bg-body-tertiary py-5">
@@ -69,7 +74,7 @@ export default function Register() {
                   </p>
                 </div>
 
-                <form>
+                <form onSubmit={handleSubmit}>
                   <div className="form-floating mb-3">
                     <input
                       type="text"
@@ -151,12 +156,19 @@ export default function Register() {
                   <button
                     type="submit"
                     className="btn btn-primary w-100 py-2 mb-3"
+                    disabled={isLoading}
                   >
-                    <span
-                      className="spinner-border spinner-border-sm me-2"
-                      role="status"
-                    ></span>
-                    Creating... Create Account
+                    {isLoading ? (
+                      <>
+                        <span
+                          className="spinner-border spinner-border-sm me-2"
+                          role="status"
+                        ></span>
+                        Creating...
+                      </>
+                    ) : (
+                      <>Create Account</>
+                    )}
                   </button>
                 </form>
                 <div className="text-center small">
