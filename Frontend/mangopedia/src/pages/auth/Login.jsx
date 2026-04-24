@@ -1,3 +1,6 @@
+import { Link } from "react-router-dom";
+import { ROUTES } from "../../utility/constants";
+
 export default function Login() {
   return (
     <>
@@ -88,14 +91,14 @@ export default function Login() {
                 </form>
                 <div className="text-center small">
                   <span className="text-muted">No account? </span>
-                  <a href="/" className="fw-semibold">
+                  <Link to={ROUTES.REGISTER} className="fw-semibold">
                     Create one
-                  </a>
+                  </Link>
                 </div>
                 <div className="text-center mt-3 small">
-                  <a href="/" className="text-decoration-none">
+                  <Link to={ROUTES.HOME} className="text-decoration-none">
                     <i className="bi bi-arrow-left me-1"></i>Back to Home
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
