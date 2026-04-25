@@ -108,7 +108,6 @@ export default function Login() {
                       id="email"
                       name="email"
                       placeholder="name@example.com"
-                      required
                       value={formData.email}
                       onChange={handleFormData}
                     />
@@ -124,7 +123,6 @@ export default function Login() {
                           id="password"
                           name="password"
                           placeholder="Password"
-                          required
                           value={formData.password}
                           onChange={handleFormData}
                         />
