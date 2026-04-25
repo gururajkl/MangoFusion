@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ROLES, ROUTES } from "../../utility/constants";
 import { useState } from "react";
 import { useRegisterUserMutation } from "../../components/store/api/authApi";
@@ -13,7 +13,9 @@ export default function Register() {
     role: ROLES.CUSTOMER,
   });
 
-  const { registerUser, isLoading, error } = useRegisterUserMutation();
+  const [registerUser, { isLoading }] = useRegisterUserMutation();
+
+  const navigate = useNavigate();
 
   const handleFormData = (e) => {
     setFormData({
@@ -22,7 +24,7 @@ export default function Register() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (
@@ -40,7 +42,27 @@ export default function Register() {
       return;
     }
 
-    console.log(formData);
+    // Data to send to the api.
+    const formDataToSend = {
+      name: formData.name,
+      email: formData.email,
+      password: formData.password,
+      role: formData.role,
+    };
+
+    try {
+      const result = await registerUser(formDataToSend).unwrap();
+
+      if (result.isSuccess) {
+        toast.success("Registration successful!, Please log in.");
+        navigate(ROUTES.LOGIN);
+      } else {
+        toast.error(result.message || "Registration failed. Please try again.");
+      }
+    } catch (err) {
+      toast.error("An error occurred while registering. Please try again.");
+      console.error("Registration error:", err);
+    }
   };
 
   return (
