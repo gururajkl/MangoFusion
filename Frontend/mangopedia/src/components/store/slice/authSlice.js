@@ -1,5 +1,9 @@
+import { createSlice } from "@reduxjs/toolkit";
 import { STORAGE_KEYS } from "../../../utility/constants";
-import { isTokenExpired } from "../../../utility/jwtUtility";
+import {
+  getUserInfoFromToken,
+  isTokenExpired,
+} from "../../../utility/jwtUtility";
 
 const getInitialAuthState = () => {
   const storedToken = localStorage.getItem(STORAGE_KEYS.TOKENMANGO);
@@ -19,4 +23,41 @@ const getInitialAuthState = () => {
       isAuthenticated: false,
     };
   }
+
+  let user = null;
+  try {
+    if (storedUser && storedUser !== "undefined" && storedUser !== "null") {
+      user = JSON.parse(storedUser);
+    }
+  } catch {
+    user = getUserInfoFromToken(storedToken);
+    if (user) {
+      localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(user));
+    }
+  }
+
+  return {
+    token: storedToken,
+    user: user,
+    isAuthenticated: !!storedToken && !!user,
+  };
 };
+
+const authSlice = createSlice({
+  name: "auth",
+  initialState: { ...getInitialAuthState() },
+  reducers: {
+    setAuth: (state, action) => {
+      const { user, token } = action.payload;
+      state.user = user;
+      state.token = token;
+      state.isAuthenticated = !!(token && user);
+
+      if (user) localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(user));
+      if (token) localStorage.setItem(STORAGE_KEYS.TOKENMANGO, token);
+    },
+  },
+});
+
+export const { setAuth } = authSlice.actions;
+export default authSlice.reducer;

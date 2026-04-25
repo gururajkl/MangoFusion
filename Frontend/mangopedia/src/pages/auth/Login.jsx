@@ -3,10 +3,14 @@ import { ROUTES } from "../../utility/constants";
 import { useLoginUserMutation } from "../../components/store/api/authApi";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { setAuth } from "../../components/store/slice/authSlice";
+import { getUserInfoFromToken } from "../../utility/jwtUtility";
 
 export default function Login() {
   const [loginUser, { isLoading }] = useLoginUserMutation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -39,6 +43,11 @@ export default function Login() {
 
       if (result.isSuccess) {
         toast.success("Login successful!");
+        const token = result.result.token;
+        const user = getUserInfoFromToken(token);
+        console.log("Decoded user info from token:", user);
+        console.log("Decoded token info from token:", token);
+        dispatch(setAuth({ user, token }));
         navigate(ROUTES.HOME);
       } else {
         toast.error(
