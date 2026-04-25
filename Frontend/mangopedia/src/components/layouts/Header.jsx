@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { ROUTES } from "../../utility/constants";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../store/slice/authSlice";
@@ -6,6 +6,12 @@ import { logout } from "../store/slice/authSlice";
 export default function Header() {
   const { isAuthenticated } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate(ROUTES.HOME);
+  };
 
   return (
     <nav className="navbar navbar-expand-lg  border-bottom shadow-sm">
@@ -107,7 +113,7 @@ export default function Header() {
                     </li>
                     <li>
                       <button
-                        onClick={() => dispatch(logout())}
+                        onClick={handleLogout}
                         className="dropdown-item d-flex align-items-center gap-2 text-danger rounded-2"
                       >
                         <i className="bi bi-box-arrow-right"></i>
