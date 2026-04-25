@@ -56,8 +56,16 @@ const authSlice = createSlice({
       if (user) localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(user));
       if (token) localStorage.setItem(STORAGE_KEYS.TOKENMANGO, token);
     },
+
+    logout: (state) => {
+      localStorage.removeItem(STORAGE_KEYS.TOKENMANGO);
+      localStorage.removeItem(STORAGE_KEYS.USER);
+      state.user = null;
+      state.token = null;
+      state.isAuthenticated = false;
+    },
   },
 });
 
-export const { setAuth } = authSlice.actions;
+export const { setAuth, logout } = authSlice.actions;
 export default authSlice.reducer;
