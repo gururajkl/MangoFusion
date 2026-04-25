@@ -23,3 +23,8 @@ export const SPECIAL_TAGS = [
 ];
 
 export const ROLES = { CUSTOMER: "Customer", ADMIN: "Admin" };
+
+export const STORAGE_KEYS = {
+  TOKENMANGO: "token-mango",
+  USER: "user-mango",
+};
