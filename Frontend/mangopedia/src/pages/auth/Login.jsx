@@ -1,9 +1,57 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ROUTES } from "../../utility/constants";
 import { useLoginUserMutation } from "../../components/store/api/authApi";
+import { useState } from "react";
+import { toast } from "react-toastify";
 
 export default function Login() {
   const [loginUser, { isLoading }] = useLoginUserMutation();
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleFormData = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!formData.email || !formData.password) {
+      toast.error("Please fill in all required fields.");
+      return;
+    }
+
+    // Data to send to the api.
+    const formDataToSend = {
+      email: formData.email,
+      password: formData.password,
+    };
+
+    try {
+      const result = await loginUser(formDataToSend).unwrap();
+
+      if (result.isSuccess) {
+        toast.success("Login successful!");
+        navigate(ROUTES.HOME);
+      } else {
+        toast.error(
+          result.errorMessage?.[0] || "Login failed. Please try again.",
+        );
+      }
+    } catch (error) {
+      toast.error(
+        error.data?.errorMessage?.[0] || "Login failed. Please try again.",
+      );
+      console.error("Login error:", error);
+    }
+  };
 
   return (
     <>
@@ -52,7 +100,7 @@ export default function Login() {
                   <p className="text-muted small mb-0">Access your account</p>
                 </div>
 
-                <form>
+                <form onSubmit={handleSubmit}>
                   <div className="form-floating mb-3">
                     <input
                       type="email"
@@ -61,6 +109,8 @@ export default function Login() {
                       name="email"
                       placeholder="name@example.com"
                       required
+                      value={formData.email}
+                      onChange={handleFormData}
                     />
                     <label htmlFor="email">Email address</label>
                   </div>
@@ -75,6 +125,8 @@ export default function Login() {
                           name="password"
                           placeholder="Password"
                           required
+                          value={formData.password}
+                          onChange={handleFormData}
                         />
                         <label htmlFor="password">Password</label>
                       </div>
