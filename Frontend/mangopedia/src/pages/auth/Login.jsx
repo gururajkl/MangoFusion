@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
 import { ROUTES } from "../../utility/constants";
+import { useLoginUserMutation } from "../../components/store/api/authApi";
 
 export default function Login() {
+  const [loginUser, { isLoading }] = useLoginUserMutation();
+
   return (
     <>
       <div className="min-vh-100 d-flex align-items-center bg-body-tertiary py-5">
@@ -80,13 +83,20 @@ export default function Login() {
 
                   <button
                     type="submit"
+                    disabled={isLoading}
                     className="btn btn-primary w-100 py-2 mb-3"
                   >
-                    <span
-                      className="spinner-border spinner-border-sm me-2"
-                      role="status"
-                    ></span>
-                    Signing In... 'Sign In'
+                    {isLoading ? (
+                      <>
+                        <span
+                          className="spinner-border spinner-border-sm me-2"
+                          role="status"
+                        ></span>
+                        Signing In...
+                      </>
+                    ) : (
+                      <>Sign In</>
+                    )}
                   </button>
                 </form>
                 <div className="text-center small">
