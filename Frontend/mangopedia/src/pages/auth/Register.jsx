@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { ROLES, ROUTES } from "../../utility/constants";
 import { useState } from "react";
 import { useRegisterUserMutation } from "../../components/store/api/authApi";
+import { toast } from "react-toastify";
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -23,6 +24,22 @@ export default function Register() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (
+      !formData.name ||
+      !formData.email ||
+      !formData.password ||
+      !formData.confirmPassword
+    ) {
+      toast.error("Please fill in all required fields.");
+      return;
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+      toast.error("Passwords do not match.");
+      return;
+    }
+
     console.log(formData);
   };
 
@@ -82,7 +99,6 @@ export default function Register() {
                       id="name"
                       name="name"
                       placeholder="Full Name"
-                      required
                       value={formData.name}
                       onChange={handleFormData}
                     />
@@ -95,7 +111,6 @@ export default function Register() {
                       id="email"
                       name="email"
                       placeholder="name@example.com"
-                      required
                       value={formData.email}
                       onChange={handleFormData}
                     />
@@ -111,7 +126,6 @@ export default function Register() {
                           id="password"
                           name="password"
                           placeholder="Password"
-                          required
                           value={formData.password}
                           onChange={handleFormData}
                         />
@@ -126,7 +140,6 @@ export default function Register() {
                           id="confirmPassword"
                           name="confirmPassword"
                           placeholder="Confirm Password"
-                          required
                           value={formData.confirmPassword}
                           onChange={handleFormData}
                         />
