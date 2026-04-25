@@ -57,11 +57,16 @@ export default function Register() {
         toast.success("Registration successful!, Please log in.");
         navigate(ROUTES.LOGIN);
       } else {
-        toast.error(result.message || "Registration failed. Please try again.");
+        toast.error(
+          result.errorMessage?.[0] || "Registration failed. Please try again.",
+        );
       }
-    } catch (err) {
-      toast.error("An error occurred while registering. Please try again.");
-      console.error("Registration error:", err);
+    } catch (error) {
+      toast.error(
+        error.data?.errorMessage?.[0] ||
+          "Registration failed. Please try again.",
+      );
+      console.error("Registration error:", error);
     }
   };
 
