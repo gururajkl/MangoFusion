@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MangoFusion.API.Models;
 
+/// <summary>
+/// Represents an individual item within a customer's order.
+/// </summary>
 public class OrderDetail
 {
     [Key]
