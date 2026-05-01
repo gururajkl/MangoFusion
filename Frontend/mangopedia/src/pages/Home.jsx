@@ -4,6 +4,7 @@ import { API_BASE_URL, CATEGORIES, ROUTES } from "../utility/constants";
 import { useState } from "react";
 import { addToCart } from "../components/store/slice/cartSlice";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
 
 export default function Home() {
   const { data: menuItems = [], isLoading, error } = useGetMenuItemsQuery();
