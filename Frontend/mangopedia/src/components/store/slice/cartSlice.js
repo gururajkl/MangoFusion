@@ -10,3 +10,11 @@ const getStoredCart = () => {
     return [];
   }
 };
+
+const saveCart = (items) => {
+  try {
+    localStorage.setItem(STORAGE_KEYS.CART, JSON.stringify(items));
+  } catch {
+    console.error("Failed to save cart to localStorage");
+  }
+};
