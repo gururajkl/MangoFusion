@@ -18,3 +18,14 @@ const saveCart = (items) => {
     console.error("Failed to save cart to localStorage");
   }
 };
+
+const calculateTotals = (items = []) => {
+  let totalItems = 0;
+  let totalAmount = 0;
+
+  for (const item of items) {
+    totalItems += item.quantity;
+    totalAmount += item.quantity * item.price;
+  }
+  return { totalItems, totalAmount };
+};
