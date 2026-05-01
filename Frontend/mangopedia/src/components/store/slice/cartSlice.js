@@ -1,3 +1,4 @@
+import { createSlice } from "@reduxjs/toolkit";
 import { STORAGE_KEYS } from "../../../utility/constants";
 
 const getStoredCart = () => {
@@ -29,3 +30,33 @@ const calculateTotals = (items = []) => {
   }
   return { totalItems, totalAmount };
 };
+
+const cartSlice = createSlice({
+  name: "cart",
+  initialState: {
+    items: getStoredCart() || [],
+    ...calculateTotals(getStoredCart()),
+  },
+  reducers: {
+    addToCart: (state, action) => {
+      const existingItem = state.items.find(
+        (item) => item.id === action.payload.id,
+      );
+
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        state.items.push({
+          ...action.payload,
+          quantity: action.payload.quantity || 1,
+        });
+      }
+
+      Object.assign(state, calculateTotals(state.items));
+      saveCart(state.items);
+    },
+  },
+});
+
+export const { addToCart } = cartSlice.actions;
+export default cartSlice.reducer;
