@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { Navigate, useLocation } from "react-router-dom";
+import { Link, Navigate, useLocation } from "react-router-dom";
 import { ROUTES } from "../../utility/constants";
 
 export default function RoleBasedRoutes({ allowedRoles, children }) {
@@ -57,14 +57,17 @@ export default function RoleBasedRoutes({ allowedRoles, children }) {
                     </p>
                   </div>
                   <div className="d-grid gap-2 d-md-flex justify-content-md-center">
-                    <button className="btn btn-secondary">
+                    <button
+                      onClick={() => window.history.back()}
+                      className="btn btn-secondary"
+                    >
                       <i className="bi bi-arrow-left me-2"></i>
                       Go Back
                     </button>
-                    <a href="/" className="btn btn-primary">
+                    <Link to="/" className="btn btn-primary">
                       <i className="bi bi-house me-2"></i>
                       Go Home
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </div>

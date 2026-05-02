@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../store/slice/authSlice";
 
 export default function Header() {
-  const { isAuthenticated } = useSelector((state) => state.auth);
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
   const { totalItems } = useSelector((state) => state.cart);
 
   const dispatch = useDispatch();
@@ -79,7 +79,7 @@ export default function Header() {
                       className="text-truncate"
                       style={{ maxWidth: "120px" }}
                     >
-                      Hello
+                      Hello {user?.name?.split(" ")?.[0] || "User"}
                     </span>
                   </button>
                   <ul
