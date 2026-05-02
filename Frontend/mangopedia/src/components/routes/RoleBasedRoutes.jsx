@@ -1,4 +1,4 @@
-export default function RoleBasedRoutes() {
+export default function RoleBasedRoutes({ allowedRoles, children }) {
   return (
     <div>
       <div className="container py-5" style={{ marginTop: "80px" }}>
