@@ -86,6 +86,7 @@ export default function Header() {
                     className="dropdown-menu dropdown-menu-end shadow border rounded-3 p-2 small"
                     style={{
                       minWidth: "220px",
+                      zIndex: 1050,
                       "--bs-dropdown-link-active-bg":
                         "rgba(var(--bs-primary-rgb), .12)",
                       "--bs-dropdown-link-active-color": "var(--bs-body-color)",
