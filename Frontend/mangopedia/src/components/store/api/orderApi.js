@@ -51,3 +51,5 @@ export const orderApi = baseApi.injectEndpoints({
     }),
   }),
 });
+
+export const { getOrders, getOrderById, createOrder, updateOrder } = orderApi;
