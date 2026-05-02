@@ -7,9 +7,11 @@ import {
   clearCart,
 } from "../../components/store/slice/cartSlice";
 import { toast } from "react-toastify";
+import { useState } from "react";
 
 export default function Cart() {
   const { items, totalItems, totalAmount } = useSelector((state) => state.cart);
+  const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const handleQuantityChange = (id, quantity) => {
@@ -29,6 +31,48 @@ export default function Cart() {
   const handleClearCart = () => {
     dispatch(clearCart());
     toast.success("Cart cleared.");
+  };
+
+  const [formData, setFormData] = useState({
+    pickUpName: user?.name || "",
+    pickUpPhoneNumber: "",
+    pickUpEmail: user?.email || "",
+  });
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const errors = [];
+    if (!formData.pickUpName.trim()) {
+      errors.push("Full Name is required");
+    }
+    if (!formData.pickUpEmail.trim()) {
+      errors.push("Email is required");
+    }
+    if (!formData.pickUpPhoneNumber.trim()) {
+      errors.push("Phone Number is required");
+    }
+
+    if (errors.length > 0) {
+      toast.error(
+        <div>
+          <strong>Please correct the following:</strong>
+          <ul className="mb-0 mt-1 ps-3">
+            {errors.map((error, index) => (
+              <li key={index}>{error}</li>
+            ))}
+          </ul>
+        </div>,
+      );
+      return;
+    }
   };
 
   if (items.length === 0) {
@@ -222,7 +266,7 @@ export default function Cart() {
           {/* Right Column - Sticky Checkout Panel */}
           <div className="col-lg-4">
             <div className="sticky-top" style={{ top: "20px" }}>
-              <form>
+              <form onSubmit={handleSubmit}>
                 <div className="card rounded shadow-sm">
                   <div className="p-4">
                     {/* Order Summary */}
@@ -242,6 +286,7 @@ export default function Cart() {
                               className="form-control"
                               id="pickUpName"
                               name="pickUpName"
+                              value={formData.pickUpName}
                               placeholder="Full Name"
                             />
                             <label htmlFor="pickUpName">Full Name *</label>
@@ -254,6 +299,7 @@ export default function Cart() {
                               className="form-control"
                               id="pickUpPhoneNumber"
                               name="pickUpPhoneNumber"
+                              value={formData.pickUpPhoneNumber}
                               placeholder="Phone Number"
                             />
                             <label htmlFor="pickUpPhoneNumber">
@@ -268,6 +314,7 @@ export default function Cart() {
                               className="form-control"
                               id="pickUpEmail"
                               name="pickUpEmail"
+                              value={formData.pickUpEmail}
                               placeholder="Email"
                             />
                             <label htmlFor="pickUpEmail">Email Address *</label>
