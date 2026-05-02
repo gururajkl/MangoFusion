@@ -5,6 +5,8 @@ import { logout } from "../store/slice/authSlice";
 
 export default function Header() {
   const { isAuthenticated } = useSelector((state) => state.auth);
+  const { totalItems } = useSelector((state) => state.cart);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -53,12 +55,14 @@ export default function Header() {
               >
                 <i className="bi bi-cart3 fs-5"></i>
 
-                <span
-                  className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger text-white shadow-sm"
-                  style={{ fontSize: "0.7rem" }}
-                >
-                  10
-                </span>
+                {totalItems > 0 && (
+                  <span
+                    className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger text-white shadow-sm"
+                    style={{ fontSize: "0.7rem" }}
+                  >
+                    {totalItems}
+                  </span>
+                )}
               </NavLink>
             </li>
 

@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function Cart() {
   return (
     <>
@@ -11,9 +13,9 @@ export default function Cart() {
             <p className="text-muted mb-4">
               Looks like you haven't added any items yet.
             </p>
-            <a href="/" className="btn btn-primary btn-lg">
+            <Link to="/" className="btn btn-primary btn-lg">
               Browse Menu
-            </a>
+            </Link>
           </div>
         </div>
       </div>
