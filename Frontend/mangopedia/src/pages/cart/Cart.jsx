@@ -288,6 +288,7 @@ export default function Cart() {
                               name="pickUpName"
                               value={formData.pickUpName}
                               placeholder="Full Name"
+                              onChange={handleChange}
                             />
                             <label htmlFor="pickUpName">Full Name *</label>
                           </div>
@@ -298,6 +299,7 @@ export default function Cart() {
                               type="tel"
                               className="form-control"
                               id="pickUpPhoneNumber"
+                              onChange={handleChange}
                               name="pickUpPhoneNumber"
                               value={formData.pickUpPhoneNumber}
                               placeholder="Phone Number"
@@ -316,6 +318,7 @@ export default function Cart() {
                               name="pickUpEmail"
                               value={formData.pickUpEmail}
                               placeholder="Email"
+                              onChange={handleChange}
                             />
                             <label htmlFor="pickUpEmail">Email Address *</label>
                           </div>
