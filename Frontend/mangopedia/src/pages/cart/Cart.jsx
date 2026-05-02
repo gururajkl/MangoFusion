@@ -1,8 +1,12 @@
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { API_BASE_URL, ROUTES } from "../../utility/constants";
 
 export default function Cart() {
-  return (
-    <>
+  const { items, totalItems, totalAmount } = useSelector((state) => state.cart);
+
+  if (items.length === 0) {
+    return (
       <div className="container py-5">
         <div className="row justify-content-center">
           <div className="col-md-8 text-center">
@@ -13,12 +17,17 @@ export default function Cart() {
             <p className="text-muted mb-4">
               Looks like you haven't added any items yet.
             </p>
-            <Link to="/" className="btn btn-primary btn-lg">
+            <Link to={ROUTES.HOME} className="btn btn-primary btn-lg">
               Browse Menu
             </Link>
           </div>
         </div>
       </div>
+    );
+  }
+
+  return (
+    <>
       <div className="container-fluid p-4 " style={{ minHeight: "100vh" }}>
         {/* Dashboard Header */}
 
@@ -46,77 +55,87 @@ export default function Cart() {
                 style={{ maxHeight: "600px", overflowY: "auto" }}
               >
                 <div className="row g-3">
-                  <div className="col-12">
-                    <div className="border rounded p-3 border-light hover-shadow">
-                      <div className="d-flex align-items-center gap-3">
-                        {/* Product Image */}
-                        <div className="flex-shrink-0">
-                          <img
-                            src="https://placehold.co/100"
-                            className="rounded"
-                            style={{
-                              width: 100,
-                              height: 100,
-                              objectFit: "cover",
-                            }}
-                          />
-                        </div>
+                  {items.map((item) => (
+                    <div key={item.id} className="col-12">
+                      <div className="border rounded p-3 border-light hover-shadow">
+                        <div className="d-flex align-items-center gap-3">
+                          {/* Product Image */}
+                          <div className="flex-shrink-0">
+                            <img
+                              src={`${API_BASE_URL}/${item.image}`}
+                              className="rounded"
+                              style={{
+                                width: 100,
+                                height: 100,
+                                objectFit: "cover",
+                              }}
+                              onError={(e) => {
+                                e.target.src = "https://placehold.co/100";
+                              }}
+                            />
+                          </div>
 
-                        {/* Product Details */}
-                        <div className="flex-grow-1">
-                          <div className="row align-items-center">
-                            <div className="col-md-4">
-                              <h6 className="mb-1 fw-semibold">NAME</h6>
-                              <div className="text-muted small">$$ each</div>
-                            </div>
+                          {/* Product Details */}
+                          <div className="flex-grow-1">
+                            <div className="row align-items-center">
+                              <div className="col-md-4">
+                                <h6 className="mb-1 fw-semibold">
+                                  {item.name}
+                                </h6>
+                                <div className="text-muted small">
+                                  ${item.price.toFixed(2)} each
+                                </div>
+                              </div>
 
-                            <div className="col-md-3">
-                              <label className="form-label small text-muted">
-                                Quantity
-                              </label>
-                              <div className="input-group input-group-sm">
+                              <div className="col-md-3">
+                                <label className="form-label small text-muted">
+                                  Quantity
+                                </label>
+                                <div className="input-group input-group-sm">
+                                  <button
+                                    className="btn btn-outline-secondary"
+                                    type="button"
+                                  >
+                                    <i className="bi bi-dash"></i>
+                                  </button>
+                                  <input
+                                    type="number"
+                                    className="form-control text-center"
+                                    min="1"
+                                    value={item.quantity}
+                                  />
+                                  <button
+                                    className="btn btn-outline-secondary"
+                                    type="button"
+                                  >
+                                    <i className="bi bi-plus"></i>
+                                  </button>
+                                </div>
+                              </div>
+
+                              <div className="col-md-3">
+                                <label className="form-label small text-muted">
+                                  Subtotal
+                                </label>
+                                <div className="fw-bold text-primary fs-5">
+                                  ${(item.price * item.quantity).toFixed(2)}
+                                </div>
+                              </div>
+
+                              <div className="col-md-2">
                                 <button
-                                  className="btn btn-outline-secondary"
-                                  type="button"
+                                  className="btn btn-outline-danger btn-sm w-100"
+                                  title="Remove item"
                                 >
-                                  <i className="bi bi-dash"></i>
-                                </button>
-                                <input
-                                  type="number"
-                                  className="form-control text-center"
-                                  min="1"
-                                />
-                                <button
-                                  className="btn btn-outline-secondary"
-                                  type="button"
-                                >
-                                  <i className="bi bi-plus"></i>
+                                  <i className="bi bi-trash3"></i>
                                 </button>
                               </div>
-                            </div>
-
-                            <div className="col-md-3">
-                              <label className="form-label small text-muted">
-                                Subtotal
-                              </label>
-                              <div className="fw-bold text-primary fs-5">
-                                price * quantity
-                              </div>
-                            </div>
-
-                            <div className="col-md-2">
-                              <button
-                                className="btn btn-outline-danger btn-sm w-100"
-                                title="Remove item"
-                              >
-                                <i className="bi bi-trash3"></i>
-                              </button>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
+                  ))}
                 </div>
               </div>
 
@@ -125,22 +144,24 @@ export default function Cart() {
                 <div className="d-flex justify-content-between align-items-center">
                   <span className="fw-bold h6 mb-0">
                     <i className="bi bi-calculator me-2"></i>
-                    Cart Total (XX items)
+                    Cart Total ({totalItems} items)
                   </span>
-                  <span className="fw-bold text-primary h4 mb-0">$$</span>
+                  <span className="fw-bold text-primary h4 mb-0">
+                    ${totalAmount.toFixed(2)}
+                  </span>
                 </div>
               </div>
 
               {/* Action Buttons */}
               <div className="border-top p-4">
                 <div className="d-flex gap-3 justify-content-center">
-                  <a
-                    href="/"
+                  <Link
+                    to={ROUTES.HOME}
                     className="btn btn-outline-secondary px-4 rounded-pill"
                   >
                     <i className="bi bi-arrow-left me-2"></i>
                     Continue Shopping
-                  </a>
+                  </Link>
                   <button className="btn btn-outline-danger px-4 rounded-pill">
                     <i className="bi bi-trash3 me-2"></i>
                     Clear Cart
@@ -213,7 +234,7 @@ export default function Cart() {
                         <span className="spinner-border spinner-border-sm me-2"></span>
                         Processing...
                         <i className="bi bi-credit-card me-2"></i>
-                        Place Order ($$)
+                        Place Order (${totalAmount.toFixed(2)})
                       </button>
                     </div>
                   </div>

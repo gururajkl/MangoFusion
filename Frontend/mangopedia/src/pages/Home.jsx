@@ -130,6 +130,9 @@ export default function Home() {
                         objectFit: "cover",
                         transition: "transform 0.3s ease",
                       }}
+                      onError={(e) => {
+                        e.target.src = "https://placehold.co/100";
+                      }}
                     />
 
                     <div className="position-absolute top-0 end-0 m-3">
