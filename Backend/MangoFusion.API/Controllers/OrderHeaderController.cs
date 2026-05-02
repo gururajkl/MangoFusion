@@ -23,7 +23,7 @@ public class OrderHeaderController : Controller
         _apiResponse = new();
     }
 
-    [HttpGet("[action]")]
+    [HttpGet]
     public ActionResult<ApiResponse> GetOrders(string userId = "")
     {
         IEnumerable<OrderHeader> orderHeaders = _dbContext.OrderHeaders.Include(o => o.OrderDetails).ThenInclude(o => o.MenuItem)
@@ -39,7 +39,7 @@ public class OrderHeaderController : Controller
         return Ok(_apiResponse);
     }
 
-    [HttpGet("[action]/{orderId:int}")]
+    [HttpGet("{orderId:int}")]
     public async Task<ActionResult<ApiResponse>> GetOrder(int orderId)
     {
         if (orderId is 0)
@@ -66,7 +66,7 @@ public class OrderHeaderController : Controller
         return Ok(_apiResponse);
     }
 
-    [HttpPost("[action]")]
+    [HttpPost]
     public async Task<ActionResult<ApiResponse>> CreateOrder([FromBody] OrderHeaderCreateDto dto)
     {
         try
@@ -128,7 +128,7 @@ public class OrderHeaderController : Controller
         }
     }
 
-    [HttpPut("[action]/{orderId:int}")]
+    [HttpPut("{orderId:int}")]
     public async Task<ActionResult<ApiResponse>> UpdateOrder(int orderId, [FromBody] OrderHeaderUpdateDto dto)
     {
         try
