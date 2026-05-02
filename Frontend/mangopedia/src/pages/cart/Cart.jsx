@@ -7,7 +7,6 @@ import {
   clearCart,
 } from "../../components/store/slice/cartSlice";
 import { toast } from "react-toastify";
-import { useState } from "react";
 
 export default function Cart() {
   const { items, totalItems, totalAmount } = useSelector((state) => state.cart);
