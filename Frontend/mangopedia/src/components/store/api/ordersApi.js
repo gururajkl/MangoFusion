@@ -4,7 +4,7 @@ export const ordersApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getOrders: builder.query({
       query: (userId = "") => ({
-        url: "/OrderHeader",
+        url: "/OrderHeader/GetOrders",
         params: userId ? { userId } : {},
       }),
       providesTags: ["Order"],
@@ -20,7 +20,7 @@ export const ordersApi = baseApi.injectEndpoints({
     }),
 
     getOrderById: builder.query({
-      query: (id) => `/OrderHeader/${id}`,
+      query: (id) => `/OrderHeader/GetOrderById/${id}`,
       providesTags: (result, error, { id }) => [{ type: "Order", id }],
       transformResponse: (response) => {
         if (response && response.result) {
@@ -32,7 +32,7 @@ export const ordersApi = baseApi.injectEndpoints({
 
     createOrder: builder.mutation({
       query: (formData) => ({
-        url: "/OrderHeader",
+        url: "/OrderHeader/CreateOrder",
         method: "POST",
         body: formData,
       }),
@@ -41,7 +41,7 @@ export const ordersApi = baseApi.injectEndpoints({
 
     updateOrder: builder.mutation({
       query: ({ orderId, orderData }) => ({
-        url: `/OrderHeader/${orderId}`,
+        url: `/OrderHeader/UpdateOrder/${orderId}`,
         method: "PUT",
         body: orderData,
       }),

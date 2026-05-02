@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { API_BASE_URL, ROUTES } from "../../utility/constants";
 import {
   removeFromCart,
@@ -8,11 +8,14 @@ import {
 } from "../../components/store/slice/cartSlice";
 import { toast } from "react-toastify";
 import { useState } from "react";
+import { useCreateOrderMutation } from "../../components/store/api/ordersApi";
 
 export default function Cart() {
   const { items, totalItems, totalAmount } = useSelector((state) => state.cart);
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const [createOrder, { isLoading }] = useCreateOrderMutation();
+  const navigate = useNavigate();
 
   const handleQuantityChange = (id, quantity) => {
     if (quantity < 1) {
@@ -72,6 +75,49 @@ export default function Cart() {
         </div>,
       );
       return;
+    }
+
+    if (!user?.id) {
+      toast.error("Unable to identify user. Please log in again.");
+      return;
+    }
+
+    const orderData = {
+      pickUpName: formData.pickUpName,
+      pickUpPhoneNumber: formData.pickUpPhoneNumber,
+      pickUpEmail: formData.pickUpEmail,
+      applicationUserId: user?.id,
+      orderTotal: totalAmount,
+      totalItem: totalItems,
+      orderDetailsDTO: items.map((item) => ({
+        menuItemId: item.id,
+        quantity: item.quantity,
+        itemName: item.name,
+        price: item.price,
+      })),
+    };
+
+    try {
+      const result = await createOrder(orderData).unwrap();
+      if (result.isSuccess) {
+        toast.success("Order placed successfully!");
+        navigate(ROUTES.ORDER_CONFIRMATION, {
+          state: {
+            orderData: {
+              orderNumber: result.result.orderHeaderId,
+              pickUpName: formData.pickUpName,
+              pickUpEmail: formData.pickUpEmail,
+              pickUpPhoneNumber: formData.pickUpPhoneNumber,
+              orderTotal: totalAmount,
+              totalItems: totalItems,
+            },
+          },
+        });
+      } else {
+        toast.error(result.errorMessages?.[0] || "Failed to place order");
+      }
+    } catch (error) {
+      toast.error(error.data?.errorMessages?.[0] || "Failed to place order");
     }
   };
 
