@@ -22,7 +22,6 @@ export default function MenuItemDetails() {
   } = useGetMenuItemByIdQuery(ItemId);
 
   const handleAddToCart = () => {
-    console.log(quantity);
     dispatch(
       addToCart({
         id: selectedMenuItem.id,
