@@ -7,6 +7,7 @@ import {
   clearCart,
 } from "../../components/store/slice/cartSlice";
 import { toast } from "react-toastify";
+import { useState } from "react";
 
 export default function Cart() {
   const { items, totalItems, totalAmount } = useSelector((state) => state.cart);
@@ -121,6 +122,12 @@ export default function Cart() {
                                   <button
                                     className="btn btn-outline-secondary"
                                     type="button"
+                                    onClick={() =>
+                                      handleQuantityChange(
+                                        item.id,
+                                        item.quantity - 1,
+                                      )
+                                    }
                                   >
                                     <i className="bi bi-dash"></i>
                                   </button>
@@ -129,10 +136,22 @@ export default function Cart() {
                                     className="form-control text-center"
                                     min="1"
                                     value={item.quantity}
+                                    onChange={(e) =>
+                                      handleQuantityChange(
+                                        item.id,
+                                        e.target.value,
+                                      )
+                                    }
                                   />
                                   <button
                                     className="btn btn-outline-secondary"
                                     type="button"
+                                    onClick={() =>
+                                      handleQuantityChange(
+                                        item.id,
+                                        item.quantity + 1,
+                                      )
+                                    }
                                   >
                                     <i className="bi bi-plus"></i>
                                   </button>
@@ -150,6 +169,7 @@ export default function Cart() {
 
                               <div className="col-md-2">
                                 <button
+                                  onClick={() => handleRemoveItem(item.id)}
                                   className="btn btn-outline-danger btn-sm w-100"
                                   title="Remove item"
                                 >
@@ -188,7 +208,10 @@ export default function Cart() {
                     <i className="bi bi-arrow-left me-2"></i>
                     Continue Shopping
                   </Link>
-                  <button className="btn btn-outline-danger px-4 rounded-pill">
+                  <button
+                    className="btn btn-outline-danger px-4 rounded-pill"
+                    onClick={handleClearCart}
+                  >
                     <i className="bi bi-trash3 me-2"></i>
                     Clear Cart
                   </button>
