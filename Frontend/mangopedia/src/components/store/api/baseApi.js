@@ -1,10 +1,17 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { API_BASE_URL } from "../../../utility/constants";
+import { API_BASE_URL, STORAGE_KEYS } from "../../../utility/constants";
 import "./menuItemsApi";
 
 // Base query function for RTK Query with authentication handling.
 const baseQuery = fetchBaseQuery({
   baseUrl: API_BASE_URL + "/api",
+  prepareHeaders: (headers, { getState }) => {
+    const token = localStorage.getItem(STORAGE_KEYS.TOKENMANGO);
+    if (token) {
+      headers.set("Authorization", `Bearer ${token}`);
+    }
+    return headers;
+  },
 });
 
 // Wrapper around the base query to include authentication token in headers.

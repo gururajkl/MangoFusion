@@ -374,11 +374,22 @@ export default function Cart() {
 
                     {/* Place Order Button */}
                     <div className="d-grid">
-                      <button className="btn btn-primary btn-lg" type="submit">
-                        <span className="spinner-border spinner-border-sm me-2"></span>
-                        Processing...
-                        <i className="bi bi-credit-card me-2"></i>
-                        Place Order (${totalAmount.toFixed(2)})
+                      <button
+                        disabled={isLoading}
+                        className="btn btn-primary btn-lg"
+                        type="submit"
+                      >
+                        {isLoading ? (
+                          <>
+                            <span className="spinner-border spinner-border-sm me-2"></span>
+                            Processing...
+                          </>
+                        ) : (
+                          <>
+                            <i className="bi bi-credit-card me-2"></i>
+                            Place Order (${totalAmount.toFixed(2)})
+                          </>
+                        )}
                       </button>
                     </div>
                   </div>
