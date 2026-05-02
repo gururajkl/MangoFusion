@@ -1,9 +1,35 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { API_BASE_URL, ROUTES } from "../../utility/constants";
+import {
+  removeFromCart,
+  updateQuantity,
+  clearCart,
+} from "../../components/store/slice/cartSlice";
+import { toast } from "react-toastify";
 
 export default function Cart() {
   const { items, totalItems, totalAmount } = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
+
+  const handleQuantityChange = (id, quantity) => {
+    if (quantity < 1) {
+      handleRemoveItem(id);
+      return;
+    }
+
+    dispatch(updateQuantity({ id, quantity: parseInt(quantity) }));
+  };
+
+  const handleRemoveItem = (id) => {
+    dispatch(removeFromCart(id));
+    toast.success("Item removed from cart.");
+  };
+
+  const handleClearCart = () => {
+    dispatch(clearCart());
+    toast.success("Cart cleared.");
+  };
 
   if (items.length === 0) {
     return (
