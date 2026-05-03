@@ -28,8 +28,6 @@ function OrderDetailsModal({
     return initialRatings;
   });
 
-  console.log(order);
-
   const { user } = useSelector((state) => state.auth);
   const canRate =
     order?.status === ORDER_STATUS.COMPLETED &&
