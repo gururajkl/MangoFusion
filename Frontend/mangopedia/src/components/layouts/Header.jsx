@@ -2,6 +2,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { ROLES, ROUTES } from "../../utility/constants";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../store/slice/authSlice";
+import { toggleTheme } from "../store/slice/themeSlice";
 
 export default function Header() {
   const { isAuthenticated, user } = useSelector((state) => state.auth);
@@ -148,6 +149,14 @@ export default function Header() {
                 </li>
               </>
             )}
+            <li className="nav-item me-lg-2">
+              <button
+                onClick={() => dispatch(toggleTheme())}
+                className="nav-link btn btn-link d-flex align-items-center p-0"
+              >
+                <i className="bi bi-moon-stars fs-5"></i>
+              </button>
+            </li>
           </ul>
         </div>
       </div>

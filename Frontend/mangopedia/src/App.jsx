@@ -2,8 +2,15 @@ import { ToastContainer } from "react-toastify";
 import Footer from "./components/layouts/Footer";
 import Header from "./components/layouts/Header";
 import ApplicationRoutes from "./components/routes/ApplicationRoutes";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
 function App() {
+  const theme = useSelector((state) => state.theme.theme);
+  useEffect(() => {
+    document.body.setAttribute("data-bs-theme", theme);
+  }, [theme]);
+
   return (
     <div className="d-flex flex-column min-vh-100 bg-body">
       <Header />
