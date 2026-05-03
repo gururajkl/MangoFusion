@@ -6,6 +6,7 @@ import { addToCart } from "../components/store/slice/cartSlice";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import Rating from "../components/ui/Rating";
+import Carousel from "../components/ui/Carousel";
 
 export default function Home() {
   const { data: menuItems = [], isLoading, error } = useGetMenuItemsQuery();
@@ -42,8 +43,9 @@ export default function Home() {
   };
 
   return (
-    <div className="container-fluid px-0 py-4">
+    <div className="container-fluid px-0">
       {/* Hero Section */}
+      <Carousel />
 
       <div className="container" id="menu">
         {/* Filters */}
