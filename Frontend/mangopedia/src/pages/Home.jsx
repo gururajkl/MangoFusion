@@ -5,6 +5,7 @@ import { useState } from "react";
 import { addToCart } from "../components/store/slice/cartSlice";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
+import Rating from "../components/ui/Rating";
 
 export default function Home() {
   const { data: menuItems = [], isLoading, error } = useGetMenuItemsQuery();
@@ -157,6 +158,14 @@ export default function Home() {
                       <span className="badge text-secondary border px-2 py-1 small">
                         {item.category || ""}
                       </span>
+                      {item.rating > 0 && (
+                        <div className="d-flex align-items-center">
+                          <Rating value={item.rating || 0} size="small" />
+                          <span className="ms-1 text-muted small fw-semibold">
+                            {item.rating.toFixed(1)}
+                          </span>
+                        </div>
+                      )}
                     </div>
 
                     {/* Description */}
