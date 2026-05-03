@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../components/store/slice/cartSlice";
 import { toast } from "react-toastify";
+import Rating from "../../components/ui/Rating";
 
 export default function MenuItemDetails() {
   const { id } = useParams();
@@ -146,6 +147,15 @@ export default function MenuItemDetails() {
                   </div>
                 </div>
               </div>
+
+              {selectedMenuItem.rating > 0 && (
+                <div className="d-flex align-items-center">
+                  <Rating value={selectedMenuItem.rating || 0} size="small" />
+                  <span className="ms-1 text-muted small fw-semibold">
+                    {selectedMenuItem.rating.toFixed(1)}
+                  </span>
+                </div>
+              )}
             </div>
 
             {/* Description */}
