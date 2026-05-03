@@ -4,8 +4,8 @@ MangoFusion is a full-stack food ordering platform with separate backend and fro
 
 ## Repository Layout
 
-- `Backend/MangoFusion.API/` — ASP.NET Core Web API for authentication, menu management, orders, and data persistence.
-- `Frontend/mangopedia/` — React + Vite frontend application for browsing menu items, managing carts, placing orders, and handling role-based admin workflows.
+- `Backend/MangoFusion.API/` - ASP.NET Core Web API for authentication, menu management, orders, and data persistence.
+- `Frontend/mangopedia/` - React + Vite frontend application for browsing menu items, managing carts, placing orders, and handling role-based admin workflows.
 
 ## Backend
 
@@ -50,18 +50,18 @@ The frontend is a React application built with Vite. It provides a responsive UI
 
 ### Backend
 
-- `dotnet restore` — install .NET dependencies
-- `dotnet build` — build the backend project
-- `dotnet run` — start the backend server
-- `dotnet ef database update` — apply EF Core migrations
+- `dotnet restore` - install .NET dependencies
+- `dotnet build` - build the backend project
+- `dotnet run` - start the backend server
+- `dotnet ef database update` - apply EF Core migrations
 
 ### Frontend
 
-- `npm install` — install dependencies
-- `npm run dev` — start the development server
-- `npm run build` — build the production bundle
-- `npm run preview` — preview the production build locally
-- `npm run lint` — run ESLint across the frontend codebase
+- `npm install` - install dependencies
+- `npm run dev` - start the development server
+- `npm run build` - build the production bundle
+- `npm run preview` - preview the production build locally
+- `npm run lint` - run ESLint across the frontend codebase
 
 ## Notes
 
