@@ -17,7 +17,14 @@ const ApplicationRoutes = () => {
       <Route path={ROUTES.HOME} element={<Home />} />
       <Route path={ROUTES.LOGIN} element={<Login />} />
       <Route path={ROUTES.REGISTER} element={<Register />} />
-      <Route path={ROUTES.ORDER_MANAGEMENT} element={<OrderManagement />} />
+      <Route
+        path={ROUTES.ORDER_MANAGEMENT}
+        element={
+          <RoleBasedRoutes>
+            <OrderManagement />
+          </RoleBasedRoutes>
+        }
+      />
       <Route
         path={ROUTES.MENU_MANAGEMENT}
         element={
