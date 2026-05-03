@@ -1,6 +1,6 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useGetMenuItemByIdQuery } from "../../components/store/api/menuItemsApi";
-import { API_BASE_URL } from "../../utility/constants";
+import { API_BASE_URL, ROUTES } from "../../utility/constants";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../components/store/slice/cartSlice";
@@ -15,6 +15,7 @@ export default function MenuItemDetails() {
   const [quantity, setQuantity] = useState(1);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const {
     data: selectedMenuItem,
@@ -223,7 +224,10 @@ export default function MenuItemDetails() {
                           Add to Cart
                         </button>
 
-                        <button className="btn btn-outline-primary">
+                        <button
+                          onClick={() => navigate(ROUTES.HOME)}
+                          className="btn btn-outline-primary"
+                        >
                           <i className="bi bi-arrow-left me-2"></i>
                           Continue Shopping
                         </button>
