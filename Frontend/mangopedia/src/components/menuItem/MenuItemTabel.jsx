@@ -80,9 +80,7 @@ export default function MenuItemTable({
                   <strong>{item.price}$</strong>
                 </td>
                 <td>
-                  <span className="badge bg-warning text-dark">
-                    {item.specialTag}
-                  </span>
+                  <span className="badge bg-warning">{item.specialTag}</span>
                 </td>
                 <td>
                   <div className="btn-group" role="group">

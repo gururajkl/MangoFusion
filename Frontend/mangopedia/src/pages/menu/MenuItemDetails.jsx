@@ -114,7 +114,7 @@ export default function MenuItemDetails() {
                 }}
               />
               <div className="position-absolute top-0 start-0 m-3">
-                <span className="badge bg-warning text-dark px-3 py-2 rounded-pill shadow-sm fs-6">
+                <span className="badge bg-warning px-3 py-2 rounded-pill shadow-sm fs-6">
                   {selectedMenuItem.specialTag}
                 </span>
               </div>
@@ -129,7 +129,7 @@ export default function MenuItemDetails() {
             <div className="mb-4">
               <div className="d-flex align-items-start justify-content-between mb-3">
                 <div>
-                  <h1 className="display-6 fw-bold mb-2 text-dark">
+                  <h1 className="display-6 fw-bold mb-2">
                     {selectedMenuItem.name}
                   </h1>
                   <div className="d-flex align-items-center gap-3 mb-2">
