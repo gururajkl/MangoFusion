@@ -9,15 +9,16 @@ function App() {
   const theme = useSelector((state) => state.theme.theme);
 
   const getThemeStyles = () => {
-    if (theme == "dark") {
-      return {
-        background: `linear-gradient(135deg, #434343 0%, #000000 25%, #2d1b69 50%, #11998e 75%, #38ef7d 100%)`,
-      };
-    } else {
-      return {
-        background: `linear-gradient(135deg, #a8edea 0%, #fed6e3 25%, #d299c2 50%, #fef9d7 75%, #a8edea 100%)`,
-      };
-    }
+    // I have removed the background gradient for now as it was causing performance issues on some devices. We can consider adding it back in the future with some optimizations if needed.
+    // if (theme == "dark") {
+    //   return {
+    //     background: `linear-gradient(135deg, #434343 0%, #000000 25%, #2d1b69 50%, #11998e 75%, #38ef7d 100%)`,
+    //   };
+    // } else {
+    //   return {
+    //     background: `linear-gradient(135deg, #a8edea 0%, #fed6e3 25%, #d299c2 50%, #fef9d7 75%, #a8edea 100%)`,
+    //   };
+    // }
   };
 
   useEffect(() => {
