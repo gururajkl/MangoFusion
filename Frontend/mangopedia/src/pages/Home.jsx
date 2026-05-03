@@ -43,9 +43,9 @@ export default function Home() {
   };
 
   return (
-    <div className="container-fluid px-0">
+    <div className="container-fluid px-0 py-4">
       {/* Hero Section */}
-      <Carousel />
+      {/* <Carousel /> I have removed this section from home page for now */}
 
       <div className="container" id="menu">
         {/* Filters */}
