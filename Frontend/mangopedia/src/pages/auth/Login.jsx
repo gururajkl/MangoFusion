@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ROUTES } from "../../utility/constants";
 import { useLoginUserMutation } from "../../components/store/api/authApi";
 import { useState } from "react";
@@ -11,6 +11,7 @@ export default function Login() {
   const [loginUser, { isLoading }] = useLoginUserMutation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -48,7 +49,8 @@ export default function Login() {
         console.log("Decoded user info from token:", user);
         console.log("Decoded token info from token:", token);
         dispatch(setAuth({ user, token }));
-        navigate(ROUTES.HOME);
+        const from = location.state?.from || ROUTES.HOME;
+        navigate(from, { replace: true });
       } else {
         toast.error(
           result.errorMessage?.[0] || "Login failed. Please try again.",
