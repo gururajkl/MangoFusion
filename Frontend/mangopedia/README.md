@@ -1,16 +1,54 @@
-# React + Vite
+# Mangopedia
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Mangopedia is the frontend application for the MangoFusion project. It is built with React and Vite, and provides a responsive UI for browsing menu items, managing carts, placing orders, and handling admin workflows through role-based routing.
 
-Currently, two official plugins are available:
+## Key Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Authentication: login and registration flows
+- Role-based UI routes for admin and regular users
+- Menu browsing and detailed item views
+- Shopping cart and checkout experience
+- Order confirmation and order management pages
+- Redux Toolkit for app state management
+- Bootstrap for responsive layout and UI styling
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React 19
+- Vite
+- React Router v7
+- Redux Toolkit
+- Bootstrap 5
+- React Toastify
+- SweetAlert2
 
-## Expanding the ESLint configuration
+## Available Scripts
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+From the project root, run:
+
+- `npm install` — install dependencies
+- `npm run dev` — start the development server
+- `npm run build` — build the production bundle
+- `npm run preview` — preview the production build locally
+- `npm run lint` — run ESLint across the codebase
+
+## Project Structure
+
+- `src/` — application source code
+  - `components/` — reusable UI components and route wrappers
+  - `layouts/` — app header and footer layout components
+  - `pages/` — feature pages for home, auth, cart, menu, and orders
+  - `store/` — Redux store configuration, slices, and API services
+  - `utility/` — shared constants and helper utilities
+
+## Getting Started
+
+1. Clone the repository.
+2. Open the project in your editor.
+3. Run `npm install`.
+4. Run `npm run dev`.
+5. Open the local URL shown in the terminal to access the app.
+
+## Notes
+
+This frontend is designed to support MangoFusion's menu and order management workflows while keeping the app lightweight and easy to extend.
