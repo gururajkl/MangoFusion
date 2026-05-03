@@ -53,7 +53,7 @@ export const ordersApi = baseApi.injectEndpoints({
 
     updateOrderDetails: builder.mutation({
       query: ({ orderDetailsId, rating }) => ({
-        url: `/OrderDetails/${orderDetailsId}`,
+        url: `/OrderDetails/UpdateOrderDetails/${orderDetailsId}`,
         method: "PUT",
         body: {
           orderDetailId: orderDetailsId,

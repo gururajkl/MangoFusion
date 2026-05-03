@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { useUpdateOrderDetailsMutation } from "../store/api/ordersApi";
+import Rating from "../ui/Rating";
 
 function OrderDetailsModal({
   order,
@@ -26,6 +27,8 @@ function OrderDetailsModal({
     }
     return initialRatings;
   });
+
+  console.log(order);
 
   const { user } = useSelector((state) => state.auth);
   const canRate =

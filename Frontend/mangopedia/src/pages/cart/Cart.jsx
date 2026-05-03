@@ -88,8 +88,8 @@ export default function Cart() {
       pickUpEmail: formData.pickUpEmail,
       applicationUserId: user?.id,
       orderTotal: totalAmount,
-      totalItem: totalItems,
-      orderDetailsDTO: items.map((item) => ({
+      totalItems: totalItems,
+      orderDetailsCreateDtos: items.map((item) => ({
         menuItemId: item.id,
         quantity: item.quantity,
         itemName: item.name,
